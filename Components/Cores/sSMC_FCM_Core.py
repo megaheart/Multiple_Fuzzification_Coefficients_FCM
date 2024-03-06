@@ -1,5 +1,6 @@
 ﻿import numpy as np
 import sympy as sp
+import scipy.optimize as opt
 from Components.Cores.M2_PrecalculationTable import M2_PrecalculationTable
 from typing import List, Tuple, Callable
 
@@ -60,10 +61,10 @@ class sSMC_FCM_Core:
 
         # Get the number of points and clusters
         N, C = U.shape
-        a = lnorm/(m - 1)
+        a = int(lnorm/(m - 1))  # Convert 'a' to an integer
         # Update dependent variable U for non-supervised points
         for i in range(N):
-            d = np.ndarray([distance_fn(X[i], V[j]) for j in range(C)])
+            d = np.array([distance_fn(X[i], V[j]) for j in range(C)])
             min_index = np.argmin(d)
 
             if d[min_index] < epsilon:
@@ -95,10 +96,10 @@ class sSMC_FCM_Core:
         a2 = lnorm/(m2 - 1)
         a3 = (m2 - m) / (m2 - 1)
         rm = m ** (1 / lnorm)
-        rm1 = m2 ** (1 / lnorm)
+        rm2 = m2 ** (1 / lnorm)
         # Update dependent variable U for non-supervised points
         for i in range(N):
-            d = np.ndarray([distance_fn(X[i], V[j]) for j in range(C)])
+            d = np.array([distance_fn(X[i], V[j]) for j in range(C)])
             min_index = np.argmin(d)
 
             if d[min_index] < epsilon:
@@ -116,10 +117,16 @@ class sSMC_FCM_Core:
                 delta = d / min_d
                 mu = 1 / ((rm * d) ** a)
                 sum_mu_not_k = np.sum(mu) - mu[k]
-                mu_k_sym = sp.symbols('mu_k')
-                eq_right = 1 / ((rm1 * d[k]) ** a2)
-                eq = sp.Eq(mu_k_sym / ((mu_k_sym + sum_mu_not_k) ** a3) , eq_right)
-                mu[k] = sp.solve(eq, mu_k_sym)
+                eq_right = 1 / ((rm2 * d[k]) ** a2)
+                # mu_k_sym = sp.symbols('mu_k')
+                # eq = sp.Eq(mu_k_sym / ((mu_k_sym + sum_mu_not_k) ** a3) , eq_right)
+                # mu_k = sp.solve(eq, mu_k_sym)
+                mu_k = opt.root_scalar(lambda mu_k: mu_k / ((mu_k + sum_mu_not_k) ** a3) - eq_right, \
+                                       bracket=[0, 1000], method='brentq')
+                # print(eq_right, sum_mu_not_k, a3)
+                # print(mu_k)
+                # raise Exception("Stop here")
+                mu[k] = mu_k.root
                 U[i] = mu / np.sum(mu)
 
         return U
@@ -141,9 +148,10 @@ class sSMC_FCM_Core:
         V = np.zeros((C, X.shape[1]))
         for j in range(C):
             u = U[:, j].flatten()
-            m = np.ndarray([m if np.isnan(Y[i]) or (Y[i] != j) else m2 for i in range(N)])
-            u = u ** m
-            V[j] = np.dot(u, m) / np.sum(u)
+            m_arr = [m if np.isnan(Y[i]) or (Y[i] != j) else m2 for i in range(N)]
+            m_arr = np.array(m_arr)
+            u = u ** m_arr
+            V[j] = np.dot(u, X) / np.sum(u)
         return V
 
     def is_converged(self) -> bool:

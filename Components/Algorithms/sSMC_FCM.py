@@ -62,9 +62,9 @@ class sSMC_FCM(sSMC_FCM_Core):
         self.X = X
         self.Y = Y
         self.U = np.zeros((N, C))
-        self.V = cg.sSMC_FCM_kmean_plus_plus(X, Y, C, self.distance_fn, self.lnorm)
         self.m = m
         self.epsilon = epsilon
+        self.V = cg.sSMC_FCM_kmean_plus_plus(X, Y, C, self.distance_fn, self.lnorm)
         self.U = self.update_U_non_supervision()
         self.m2 = self.calculate_m2(alpha)
 

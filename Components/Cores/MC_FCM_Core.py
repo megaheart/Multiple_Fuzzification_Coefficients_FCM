@@ -55,7 +55,7 @@ class MC_FCM_Core:
         a = lnorm/(m - 1)
         # Update dependent variable U for non-supervised points
         for i in range(N):
-            d = np.ndarray([distance_fn(X[i], V[j]) for j in range(C)])
+            d = np.array([distance_fn(X[i], V[j]) for j in range(C)])
             min_index = np.argmin(d)
 
             if d[min_index] < epsilon:
@@ -86,7 +86,7 @@ class MC_FCM_Core:
         for j in range(C):
             u = U[:, j].flatten()
             u = u ** m
-            V[j] = np.dot(u, m) / np.sum(u)
+            V[j] = np.dot(u, X) / np.sum(u)
         return V
 
     def check_convergence(self) -> bool:
@@ -103,4 +103,40 @@ class MC_FCM_Core:
 
         # Check if the algorithm has converged
         return distance_fn(V, V_old) < epsilon
+    
+    def generate_m_and_get_nearest_neibor_list(self, nn: int) -> Tuple[np.ndarray, List[np.ndarray]]:
+        """
+        Generate fuzziness coefficient m for non-supervised points,
+        and get the nearest neighbor list for each point (size = nn)
+
+        Parameters
+        ----------
+        nn : int
+            The number of nearest neighbors for each point
+
+        Returns
+        -------
+        np.ndarray
+            Fuzziness coefficient 1D Numpy Array
+        """
+        #initialize variables
+        X, 
+        return np.full(nn, m)
+    
+    def generate_m(self, nn: int) -> np.ndarray:
+        """
+        Generate fuzziness coefficient m for non-supervised points
+
+        Parameters
+        ----------
+        nn : int
+            The number of nearest neighbors for each point
+
+        Returns
+        -------
+        np.ndarray
+            Fuzziness coefficient 1D Numpy Array
+        """
+        return self.generate_m_and_get_nearest_neibor_list(nn)[0]
+
     
