@@ -33,6 +33,8 @@ class sSMC_FCM(sSMC_FCM_Core):
         """
         Solve the sSMC-FCM algorithm
 
+        Time Complexity: O(l*N*C*D) if all clusters have supervised points, otherwise O(C^2*N*D + l*N*C*D)
+
         Parameters
         ----------
         X : np.ndarray
@@ -64,14 +66,15 @@ class sSMC_FCM(sSMC_FCM_Core):
         self.U = np.zeros((N, C))
         self.m = m
         self.epsilon = epsilon
-        self.V = cg.sSMC_FCM_kmean_plus_plus(X, Y, C, self.distance_fn, self.lnorm)
-        self.U = self.update_U_non_supervision()
-        self.m2 = self.calculate_m2(alpha)
+        self.V = cg.sSMC_FCM_kmean_plus_plus(X, Y, C, self.distance_fn, self.lnorm) # Time Complexity: O(N*D) if all clusters have supervised
+                                                                            # points, otherwise O(C^2*N*D)
+        self.U = self.update_U_non_supervision() # Time Complexity: O(N*C*D)
+        self.m2 = self.calculate_m2(alpha) # Time Complexity: O(len(Y)) ~ O(N)
 
         for l in range(max_iter):
-            self.U = self.update_U()
-            self.V_old = self.V
-            self.V = self.update_V()
+            self.U = self.update_U() # Time Complexity: O(N*C*D)
+            self.V_old = self.V # Time Complexity: O(C*D)
+            self.V = self.update_V() # Time Complexity: O(N*C*D)
             if self.is_converged():
                 break
 

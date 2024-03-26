@@ -16,9 +16,9 @@ class sSMC_FCM_Core:
         1D Numpy array (N) of the cluster index of all input points
         Unless the point is non-supervised, the value is NaN
     V : np.ndarray
-        2D Numpy array (C, D) of all cluster centers, K is the number of clusters, D is the number of features
+        2D Numpy array (C, D) of all cluster centers, C is the number of clusters, D is the number of features
     V_old : np.ndarray
-        2D Numpy array (C, D) of all previous cluster centers, K is the number of clusters, D is the number of features
+        2D Numpy array (C, D) of all previous cluster centers, C is the number of clusters, D is the number of features
     U : np.ndarray
         2D Numpy array (N, C) of all membership degrees
         Element (i, j) is the membership degree of point i to cluster j
@@ -49,6 +49,8 @@ class sSMC_FCM_Core:
         """
         Update dependent variable U without supervision (without label Y)
 
+        Time Complexity: O(N*C*D)
+
         Returns
         -------
         np.ndarray
@@ -61,10 +63,10 @@ class sSMC_FCM_Core:
 
         # Get the number of points and clusters
         N, C = U.shape
-        a = int(lnorm/(m - 1))  # Convert 'a' to an integer
+        a = lnorm/(m - 1)
         # Update dependent variable U for non-supervised points
         for i in range(N):
-            d = np.array([distance_fn(X[i], V[j]) for j in range(C)])
+            d = distance_fn(X[i, None], V)
             min_index = np.argmin(d)
 
             if d[min_index] < epsilon:
@@ -79,6 +81,8 @@ class sSMC_FCM_Core:
     def update_U(self) -> np.ndarray:
         """
         Update dependent variable U 
+
+        Time complexity: O(N*C*D)
 
         Returns
         -------
@@ -99,7 +103,7 @@ class sSMC_FCM_Core:
         rm2 = m2 ** (1 / lnorm)
         # Update dependent variable U for non-supervised points
         for i in range(N):
-            d = np.array([distance_fn(X[i], V[j]) for j in range(C)])
+            d = distance_fn(X[i, None], V)
             min_index = np.argmin(d)
 
             if d[min_index] < epsilon:
@@ -135,23 +139,25 @@ class sSMC_FCM_Core:
         """
         Update cluster centers V
 
+        Time Complexity: O(N*C*D)
+
         Returns
         -------
         np.ndarray
-            2D Numpy array (C, D) of all new cluster centers, K is the number of clusters, D is the number of features
+            2D Numpy array (C, D) of all new cluster centers, C is the number of clusters, D is the number of features
         """
         #initialize variables
         X , Y , V , U , m , m2 = self.X , self.Y , self.V , self.U , self.m , self.m2
 
         # Calculate new cluster centers V
         N, C = U.shape
-        V = np.zeros((C, X.shape[1]))
+        V = np.zeros((C, X.shape[1])) # Time complexity: O(C*D)
         for j in range(C):
-            u = U[:, j].flatten()
-            m_arr = [m if np.isnan(Y[i]) or (Y[i] != j) else m2 for i in range(N)]
-            m_arr = np.array(m_arr)
+            u = U[:, j].flatten() # Time complexity: O(N)
+            # m_arr = [m if np.isnan(Y[i]) or (Y[i] != j) else m2 for i in range(N)]
+            m_arr = m + (m2 - m) * (Y == j)
             u = u ** m_arr
-            V[j] = np.dot(u, X) / np.sum(u)
+            V[j] = np.dot(u, X) / np.sum(u) # Time complexity: O(N*D)
         return V
 
     def is_converged(self) -> bool:
@@ -167,11 +173,13 @@ class sSMC_FCM_Core:
         V , V_old, epsilon, distance_fn = self.V , self.V_old , self.epsilon , self.distance_fn
 
         # Check if the algorithm has converged
-        return distance_fn(V, V_old) < epsilon
+        return np.all(distance_fn(V, V_old) < epsilon)
     
     def calculate_m2(self, alpha = 0.6) -> float:
         """
         Calculate m2 value
+
+        Time Complexity: O(len(Y)) ~ O(N)
 
         Parameters
         ----------
@@ -189,7 +197,7 @@ class sSMC_FCM_Core:
         if len(u) == 0:
             return m    
         u_min = np.min(u)
-        return M2_PrecalculationTable.calculate_m2_integer(m, m, alpha, u_min)
+        return M2_PrecalculationTable.calculate_m2_integer(m, m, alpha, u_min) # Time Complexity: O(1)
         # if self.__m2_table is None:
         #     self.__m2_table = M2_PrecalculationTable(m, alpha)
         # # Get the precalculated m2 value

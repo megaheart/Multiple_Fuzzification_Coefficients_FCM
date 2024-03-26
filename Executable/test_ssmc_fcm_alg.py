@@ -51,6 +51,10 @@ Y = np.concatenate((train_y, np.array([math.nan]*test_size)), axis=0)
 print("Number of unique labels in training, test: ",
       len(np.unique(train_y)), len(np.unique(test_y)))
 
+V1 = cg.sSMC_FCM_kmean_plus_plus(X, Y, C, alg.distance_fn, alg.lnorm)
+print("V1: ", V1)
+V2 = cg.kmean_plus_plus(X, C)
+print("V2: ", V2)
 # %%
 # initialize variables; initialize U, V, m2
 print("Initializing variables")
@@ -69,6 +73,9 @@ alg.U = alg.update_U_non_supervision()
 alg.m2 = alg.calculate_m2(alpha)
 print("Initialized m2: ", alg.m2)
 
+X_same = np.copy(X)
+Y_same = np.copy(Y)
+
 for l in range(max_iter):
     alg.U = alg.update_U()
     alg.V_old = alg.V
@@ -83,3 +90,7 @@ for l in range(max_iter):
 
     if alg.is_converged():
         break
+
+# Check whether X == X_same and Y == Y_same
+print("X == X_same: ", np.array_equal(X, X_same))
+print("Y == Y_same: ", np.array_equal(Y, Y_same))

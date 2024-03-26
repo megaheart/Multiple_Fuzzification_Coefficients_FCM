@@ -59,7 +59,7 @@ class M2_PrecalculationTable():
         n = len(self._m2_table)
         previous_m2 = m
 
-        for i in reversed(range(n)):
+        for i in range(n - 1, -1, -1):
             u = i / n
             self._m2_table[i] = previous_m2 = self.calculate_m2_integer(m, previous_m2, U_expect, u)
     
@@ -67,7 +67,7 @@ class M2_PrecalculationTable():
         n = len(self._m2_table)
         previous_m2 = m
 
-        for i in reversed(range(n)):
+        for i in range(n - 1, -1, -1):
             u = i / n
             self._m2_table[i] = previous_m2 = self.calculate_m2_float(m, previous_m2, U_expect, u, epsilon)
 
