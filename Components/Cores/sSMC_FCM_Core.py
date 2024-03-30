@@ -125,8 +125,11 @@ class sSMC_FCM_Core:
                 # mu_k_sym = sp.symbols('mu_k')
                 # eq = sp.Eq(mu_k_sym / ((mu_k_sym + sum_mu_not_k) ** a3) , eq_right)
                 # mu_k = sp.solve(eq, mu_k_sym)
-                mu_k = opt.root_scalar(lambda mu_k: mu_k / ((mu_k + sum_mu_not_k) ** a3) - eq_right, \
-                                       bracket=[0, 1000], method='brentq')
+                eq_func = lambda mu_k: mu_k / ((mu_k + sum_mu_not_k) ** a3) - eq_right
+                root_end_range = sum_mu_not_k * 10
+                while eq_func(root_end_range) < 0:
+                    root_end_range *= 2
+                mu_k = opt.root_scalar(eq_func, bracket=[0, root_end_range], method='brentq')
                 # print(eq_right, sum_mu_not_k, a3)
                 # print(mu_k)
                 # raise Exception("Stop here")

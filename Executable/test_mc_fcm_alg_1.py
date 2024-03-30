@@ -111,8 +111,6 @@ if __name__ == '__main__':
     
     mse_loss = 0
 
-    print("all indexs 0:", np.inde)
-
     for i in range(N):
         cluster_index = pred_y[i]
         mse_loss += (y_clusters[cluster_index] - elements_Qi[i]) ** 2
