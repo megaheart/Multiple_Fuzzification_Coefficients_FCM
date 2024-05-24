@@ -1,0 +1,57 @@
+{
+    "en": {
+        "ToastTitle": {
+            "SUCCESS": "Success",
+            "ERROR": "Error",
+            "WARNING": "Warning",
+            "INFO": "Information"
+        },
+        "FieldErrorMsg": {
+            "REQUIRED": "Field is required",
+            "INVALID": "Invalid field",
+            "INVALID_EMAIL": "Invalid email",
+            "INVALID_NUMBER": "Invalid number format"
+        },
+        "DateFieldErrorMsg": {
+            "INVALID_DATE_FORMAT": "Invalid format (dd/mm/yyyy)",
+            "INVALID_DAY": "Invalid day (1-31)",
+            "INVALID_MONTH": "Invalid month (1-12)",
+            "INVALID_YEAR": "Invalid year (1000-9999)"
+        },
+        "RequestErrorMsg": {
+            "NO_INTERNET": "Internet connection lost, please try again",
+            "UNDEFINED": "Undefined error, please try again",
+            "INVALID_DATA": "Invalid data, please try again",
+            "NOT_FOUND": "Data not found, please try again",
+            "DUPLICATE": "Data already exists, please try again",
+            "UNAUTHORIZED": "Unauthorized access, please try again",
+            "FORBIDDEN": "Forbidden access, please try again",
+            "BAD_REQUEST": "Invalid data, please try again",
+            "METHOD_NOT_ALLOWED": "Invalid method, please try again",
+            "REQUEST_TIMEOUT": "Internet connection lost, please try again",
+            "FETCH_SUCCESS": "Data retrieval successful",
+            "FETCH_FAIL": "Data retrieval failed",
+            "INTERNAL_SERVER_ERROR": "Server error, please try again"
+        },
+        "DialogTitle": {
+            "CONFIRM_DELETE": "Confirm Delete",
+            "WARNING": "Warning",
+            "INFO": "Information",
+            "ERROR": "Error",
+            "SUCCESS": "Success",
+            "CONFIRM": "Confirm",
+            "ATTENTION": "Attention"
+        },
+        "DialogMsg": {
+            "CONFIRM_DELETE": "Are you sure you want to delete?",
+            "CONFIRM_LOGOUT": "Are you sure you want to log out?",
+            "CONFIRM_CANCEL": "Are you sure you want to cancel?",
+            "CONFIRM": "Are you sure you want to proceed?"
+        },
+        "GenderText": {
+            "MALE": "Male",
+            "FEMALE": "Female",
+            "OTHER": "Other"
+        }
+    }
+}
