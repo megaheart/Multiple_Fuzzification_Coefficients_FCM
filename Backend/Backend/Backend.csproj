@@ -9,22 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\animations\JR7pTwWIFQ.lottie" />
-    <None Include="wwwroot\assets\index-31b1cff2.js" />
-    <None Include="wwwroot\assets\index-c412a7d9.css" />
-    <None Include="wwwroot\imgs\favicon-32x32.png" />
-    <None Include="wwwroot\imgs\favicon-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\aspnet-angular.png" />
-    <None Include="wwwroot\imgs\introduction-page\chrome-web-store-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\create-icon-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\desktop-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\group-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\hust.png" />
-    <None Include="wwwroot\imgs\introduction-page\luyen-thi-toeic-philippines-du-hoc-glolink-1.png" />
-    <None Include="wwwroot\imgs\introduction-page\microsoft-office-2019-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\programming-lang.png" />
-    <None Include="wwwroot\imgs\introduction-page\source-code-96.png" />
-    <None Include="wwwroot\imgs\introduction-page\tool.png" />
+    <Compile Remove="wwwroot\animations\**" />
+    <Compile Remove="wwwroot\assets\**" />
+    <Compile Remove="wwwroot\imgs\**" />
+    <Content Remove="wwwroot\animations\**" />
+    <Content Remove="wwwroot\assets\**" />
+    <Content Remove="wwwroot\imgs\**" />
+    <EmbeddedResource Remove="wwwroot\animations\**" />
+    <EmbeddedResource Remove="wwwroot\assets\**" />
+    <EmbeddedResource Remove="wwwroot\imgs\**" />
+    <None Remove="wwwroot\animations\**" />
+    <None Remove="wwwroot\assets\**" />
+    <None Remove="wwwroot\imgs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\index.html" />
   </ItemGroup>
 

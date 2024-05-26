@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Backend.Resources;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.VisualBasic;
+using System.Text.Json;
 
 namespace Backend.Services
 {
@@ -16,13 +19,16 @@ namespace Backend.Services
         public async Task NewMessage(long username, string message)
         {
             // Get Id of user who sent the message
-            var userId = Context.ConnectionId;
+            var connId = Context.ConnectionId;
 
-            _logger.LogInformation($"New message from {userId}: {message}");
+            _logger.LogInformation($"New message from {connId}: {message}");
 
-            if (!string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(connId))
             {
-                _rabbitMQProducer.SendMessageDirect("queue.dataFace", userId + "," + message);
+                var json = JsonSerializer.Deserialize<Dictionary<string, object>>(message);
+                json["connId"] = connId;
+                var msg = JsonSerializer.Serialize(json);
+                _rabbitMQProducer.SendMessageDirect(QueueNames.AI, msg);
                 //await Clients.Client(userId).SendAsync("messageReceived", userId, message);
             }
         }

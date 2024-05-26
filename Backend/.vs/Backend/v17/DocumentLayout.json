@@ -7,16 +7,20 @@
       "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\rabbitmqconsumer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\rabbitmqproducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\rabbitmqproducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\resources\\queuenames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\resources\\queuenames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,16 +50,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "QueueNames.cs",
+              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Resources\\QueueNames.cs",
+              "RelativeDocumentMoniker": "Backend\\Resources\\QueueNames.cs",
+              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Resources\\QueueNames.cs",
+              "RelativeToolTip": "Backend\\Resources\\QueueNames.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-24T17:54:28.473Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "SignalRHub.cs",
               "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
               "RelativeDocumentMoniker": "Backend\\Services\\SignalRHub.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
               "RelativeToolTip": "Backend\\Services\\SignalRHub.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAdAAAA",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAUwBsAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T13:05:47.06Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-24T13:05:47.06Z"
             },
             {
               "$type": "Document",
@@ -67,8 +82,7 @@
               "RelativeToolTip": "Backend\\Services\\RabbitMQProducer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T12:11:57.047Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-24T12:11:57.047Z"
             },
             {
               "$type": "Document",
@@ -78,20 +92,20 @@
               "RelativeDocumentMoniker": "Backend\\Services\\RabbitMQConsumer.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\RabbitMQConsumer.cs",
               "RelativeToolTip": "Backend\\Services\\RabbitMQConsumer.cs",
-              "ViewState": "AQIAACoAAAAAAAAAAAAcwDoAAABnAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-24T11:34:57.678Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeDocumentMoniker": "Backend\\Program.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeToolTip": "Backend\\Program.cs",
-              "ViewState": "AQIAABkAAAAAAAAAAAAcwEAAAAAAAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAkwEAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-24T11:20:57.603Z",
               "EditorCaption": ""
