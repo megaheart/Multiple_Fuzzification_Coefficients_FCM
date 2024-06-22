@@ -1,0 +1,19 @@
+{
+    "/hub": {
+        "target": "https://localhost:7039/",
+        "secure": false,
+        "changeOrigin": true,
+        "ws": true,
+        "headers": {
+            "Connection": "keep-alive"
+        }
+    },
+    "/api": {
+        "target": "https://localhost:7039/",
+        "secure": false,
+        "changeOrigin": true,
+        "headers": {
+            "Connection": "keep-alive"
+        }
+    }
+}

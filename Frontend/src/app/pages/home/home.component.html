@@ -1,0 +1,62 @@
+<div class="nav-bar">
+    <div class="nav-bar__left">
+        <div class="logo">
+            <img src="assets/hust-logo.png" alt="HUST" />
+            <span>HUST</span>
+        </div>
+        <div class="logo">
+            <img src="/favicon.ico" alt="HUST" />
+            <span>Dự đoán chu kỳ sống của pin Lithium-Ion</span>
+        </div>
+    </div>
+    <div class="nav-bar__right">
+        <span>SV: Trần Phúc Mạnh Linh 20200352</span>
+        <span>GVHD: PGS. TS. Trần Đình Khang</span>
+    </div>
+
+</div>
+
+<div class="home-page">
+    <div class="home-page__left-block">
+        <div class="panel">
+            <button mat-flat-button mat-flat-button color="primary"
+                [disabled]="disabledPreviousStepBtn"
+                (click)="selectCatalogue(currentCatalogueIndex - 1)">
+                Bước trước
+            </button>
+            <button mat-flat-button mat-flat-button color="primary"
+                [disabled]="disabledResetBtn"
+                (click)="reset()">
+                Đặt lại
+            </button>
+        </div>
+        <ul class="catalogues">
+            @for (title of catalogueList; track $index) {
+                <li class="catalogue" [class.active]="currentCatalogueIndex === $index" 
+                    [class.past-step]="currentCatalogueIndex > $index"
+                    (click)="selectCatalogue($index)">
+                    <span class="catalogue__index">{{ $index + 1 }}</span>
+                    <span class="catalogue__title">{{ title }}</span>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="home-page__main-block">
+        @switch (currentCatalogueIndex) {
+            @case (0) {
+                <app-choose-supervised [supervisedBatteryOrders]="supervisedBatteryOrders" (nextStepEvent)="step1($event)"/>
+            }
+            @case (1) {
+                <app-choose-battery-state [unsupervisedBatteryOrders]="unsupervisedBatteryOrders" (nextStepEvent)="step2($event)"/>
+            }
+            @case (2) {
+                <app-prediction-view  [supervisedBatteryOrders]="supervisedBatteryOrders" [predictingState]="predictingState"
+                    [predictingBatteryOrder]="predictingBatteryOrder" [predictingCycleOrder]="predictingCycleOrder"
+                    (nextStepEvent)="step3($event)"/>
+            }
+            @case (3) {
+                <app-evalution-view [result]="result()"/>
+            }
+        }
+    </div>
+</div>

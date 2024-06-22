@@ -1,0 +1,97 @@
+@use '@angular/material' as mat;
+
+.choose-supervised {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 30px;
+    $padding: 30px;
+    height: calc(100% - ($padding * 2));
+    // width: 100%;
+    padding: $padding;
+
+    &__description {
+        grid-column: 1;
+        grid-row: 1;
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            text-align: justify;
+        }
+    }
+
+    &__panel {
+        grid-column: 1;
+        grid-row: 2;
+
+        >div:first-child {
+            span{
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                display: inline-block;
+
+                .val {
+                    color: #039f51;
+
+                    &.invalid {
+                        color: #ff0000;
+                    }
+                }
+            }
+        }
+
+        >div:nth-child(2) {
+            margin-bottom: 10px;
+
+            >button {
+                margin-bottom: 10px;
+            }
+        }
+
+    }
+
+    &__main {
+        display: grid;
+        grid-column: 2;
+        grid-row: 1 / span 2;
+
+        >.table {
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+            max-width: 559px;
+            margin: 0 auto;
+
+            >:first-child {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            >:last-child {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            table {
+                display: block;
+                overflow: auto;
+                max-height: 100%;
+            }
+        }
+    }
+
+
+}
+
+.mat-column-select {
+    overflow: initial;
+}

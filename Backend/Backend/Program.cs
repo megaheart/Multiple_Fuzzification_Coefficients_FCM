@@ -1,7 +1,13 @@
 ﻿
+using Backend.Mappers;
 using Backend.Services;
+using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -19,7 +25,11 @@ namespace Backend
             builder.Services.AddScoped<RabbitMQProducer>();
 
 
-            builder.Services.AddSignalR();
+            builder.Services.AddSignalR()
+                .AddJsonProtocol(options =>
+                {
+                    options.PayloadSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
 
             builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {
@@ -67,7 +77,11 @@ namespace Backend
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddMemoryCache();
+            builder.Services.AddAutoMapper((serviceProvider, automapper) =>
+            {
+                automapper.AddProfile<MappingProfile>();
+            }, AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddHostedService<RabbitMQConsumer>();
 
             var app = builder.Build();
@@ -96,6 +110,8 @@ namespace Backend
             app.MapHub<SignalRHub>("/hub");
 
             app.MapFallbackToFile("index.html");
+
+            app.LoadFilesToCache();
 
             app.Run();
 

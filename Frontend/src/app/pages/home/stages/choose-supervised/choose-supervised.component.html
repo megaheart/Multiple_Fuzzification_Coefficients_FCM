@@ -1,0 +1,83 @@
+<div class="choose-supervised">
+    <div class="choose-supervised__description">
+        <h1>
+            Chọn tập giám sát từ 124 pin Lithium-Ion
+        </h1>
+        <p>
+            Những chu kì của những pin được chọn trên 124 pin Lithium-Ion sẽ được sử dụng để làm tập giám sát cho mô
+            hình dự đoán.
+        </p>
+        <p>
+            Cần chọn ít nhất 50 pin và nhiều nhất 123 pin để có thể tiếp tục sang bước sau.
+        </p>
+    </div>
+    <div class="choose-supervised__panel">
+        <div>
+            <span>
+                Đã chọn <span class="val" [class.invalid]="selection.selected.length < 50 || selection.selected.length > 123">{{selection.selected.length}}</span>/{{dataSource.data.length}} Pin (50-123)
+            </span>
+        </div>
+        <div>
+            <button mat-flat-button mat-flat-button color="primary"
+                (click)="chooseBatteryOrdersRandom()">
+                Chọn ngẫu nhiên
+            </button>
+            <mat-form-field>
+                <mat-label>Số lượng pin cần chọn</mat-label>
+                <input matInput [(ngModel)]="numOfSelectingBatteryOrdersRandom" type="number" min="50" max="123" required />
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-flat-button mat-flat-button color="primary"
+                [disabled]="selection.selected.length < 50 || selection.selected.length > 123"
+                (click)="nextStep()">
+                Bước tiếp theo
+            </button>
+        </div>
+    </div>
+    <div class="choose-supervised__main" #rightLayout>
+        <div class="table" style="display: none;" #dataTable>
+            <div class="table-main" style="overflow-x: auto;overflow-y: hidden;">
+                <table mat-table [dataSource]="dataSource" #tableBlock>
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                        [checked]="selection.hasValue() && isAllSelected()"
+                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                          <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(row) : null"
+                                        [checked]="selection.isSelected(row)">
+                          </mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="battery_order">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> STT </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.battery_order}} </td>
+                    </ng-container>
+    
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="policy_readable">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 300px;"> Tên Pin </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.policy_readable}} </td>
+                    </ng-container>
+    
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="cycle_count">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Số chu kì</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.cycle_count}} </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="prediction-view">
+    <div class="prediction-view__description">
+        <h1>
+            Tiến hành dự đoán
+        </h1>
+        <p>
+            Dự đoán dung lượng pin và thời gian sống còn lại của pin tại chu kì được chọn dựa vào trạng thái của chu kì đó.
+        </p>
+        <p>
+            Giao diện hiển thị tiến độ thực hiện của quá trình dự đoán.
+        </p>
+        <p>
+            Hệ thống sẽ tự động chuyển sang bước sau khi dự đoán hoàn tất.
+        </p>
+    </div>
+    <div class="prediction-view__panel">
+        <div>
+            <button mat-flat-button mat-flat-button color="primary"
+                [disabled]="isRetryBtnDisabled()"
+                (click)="retry()">
+                Thử lại
+            </button>
+        </div>
+    </div>
+    <div class="prediction-view__main" #rightLayout>
+        <ul class="prediction-stage-list">
+            @for (stage of predictionStages(); track stage.code){
+                <li class="prediction-stage" [matTooltip]="stage.name">
+                    @switch (stage.status) {
+                        @case ("PENDING") {
+                            <div class="pending">
+                                <span class="status">
+                                    <mat-icon aria-hidden="false" aria-label="Example home icon" 
+                                        fontIcon="pending"></mat-icon>
+                                </span>
+                                <span class="name">{{stage.name}}</span>
+                            </div>
+                        }
+                        @case ("PROCESSING") {
+                            <div class="processing">
+                                <span class="status">
+                                    <mat-icon aria-hidden="false" aria-label="Example home icon" 
+                                        fontIcon="cached"></mat-icon>
+                                </span>
+                                <span class="name">{{stage.name}}</span>
+                            </div>
+                        }
+                        @case ("DONE") {
+                            <div class="done">
+                                <span class="status">
+                                    <mat-icon aria-hidden="false" aria-label="Example home icon" 
+                                        fontIcon="task_alt"></mat-icon>
+                                </span>
+                                <span class="name">{{stage.name}}</span>
+                            </div>
+                        }
+                        @case ("ERROR") {
+                            <div class="error">
+                                <span class="status">
+                                    <mat-icon aria-hidden="false" aria-label="Example home icon" 
+                                        fontIcon="error"></mat-icon>
+                                </span>
+                                <span class="name">{{stage.name}}</span>
+                            </div>
+                        }
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>

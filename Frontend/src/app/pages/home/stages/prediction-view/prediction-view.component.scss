@@ -1,0 +1,126 @@
+@use '@angular/material' as mat;
+
+.prediction-view {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 30px;
+    $padding: 30px;
+    height: calc(100% - ($padding * 2));
+    // width: 100%;
+    padding: $padding;
+
+    &__description {
+        grid-column: 1;
+        grid-row: 1;
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            text-align: justify;
+        }
+    }
+
+    &__panel {
+        grid-column: 1;
+        grid-row: 2;
+
+        >div:first-child {
+            span{
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                display: inline-block;
+
+                .val {
+                    color: #039f51;
+
+                    &.invalid {
+                        color: #ff0000;
+                    }
+                }
+            }
+        }
+
+        >div:nth-child(2) {
+            margin-bottom: 10px;
+
+            >button {
+                margin-bottom: 10px;
+            }
+        }
+
+    }
+
+    &__main {
+        display: grid;
+
+        ul.prediction-stage-list{
+            list-style: none;
+
+            >li.prediction-stage>div {
+                display: grid;
+                grid-template-columns: 40px 1fr 40px;
+                grid-template-rows: 40px;
+                justify-items: center;
+                align-items: center;
+
+                background: var(--color-sheet);
+                border-radius: 10px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+                padding: 8px 15px;
+                margin: 10px 0;
+
+                >.status {
+                    grid-row: 1;
+                    grid-column: 1;
+                }
+
+                >.name {
+                    grid-row: 1;
+                    grid-column: 2;
+                }
+
+                &.pending {
+                    color: #969696;
+                }
+
+                &.done {
+                    color: #039f51;
+                }
+
+                &.error {
+                    color: #ff0000;
+                    font-weight: 500;
+                }
+
+                &.processing {
+                    color: #3f51b5;
+                    font-weight: 500;
+                    box-shadow: 0 1px 3px rgb(63, 81, 181, 0.8);
+
+                    .status{
+                        @keyframes spin {
+                           0% {
+                               transform: rotate(0deg);
+                           }
+                            100% {
+                                 transform: rotate(-360deg);
+                            } 
+                        }
+
+                        .mat-icon {
+                            animation: spin 2s linear infinite;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+}

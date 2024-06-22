@@ -20,19 +20,36 @@ namespace Backend.Services
 
         public void SendMessageDirect(string queue, string message)
         {
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                // Declare queue
-                channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+            // Declare queue
+            channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-                // Convert message to byte array
-                var body = Encoding.UTF8.GetBytes(message);
+            // Convert message to byte array
+            var body = Encoding.UTF8.GetBytes(message);
 
-                // Publish data to RabbitMQ broker
-                //channel.BasicPublish(exchange: "", routingKey: "hello", basicProperties: null, body: body);
-                channel.BasicPublish(exchange: "", routingKey: queue, basicProperties: null, body: body);
-            }
+            // Publish data to RabbitMQ broker
+            //channel.BasicPublish(exchange: "", routingKey: "hello", basicProperties: null, body: body);
+            channel.BasicPublish(exchange: "", routingKey: queue, basicProperties: null, body: body);
+
+        }
+
+        public async Task SendJsonDirect<T>(string queue, T json)
+        {
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+            // Declare queue
+            channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            using var stream = new MemoryStream(256);
+            await JsonSerializer.SerializeAsync(stream, json);
+
+            // Convert message to byte array
+            var body = stream.ToArray();
+
+            // Publish data to RabbitMQ broker
+            //channel.BasicPublish(exchange: "", routingKey: "hello", basicProperties: null, body: body);
+            channel.BasicPublish(exchange: "", routingKey: queue, basicProperties: null, body: body);
 
         }
     }

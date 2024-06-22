@@ -1,0 +1,109 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$frontend-primary: mat.define-palette(mat.$indigo-palette);
+$frontend-accent: mat.define-palette(mat.$yellow-palette, A700);
+
+// The warn palette is optional (defaults to red).
+$frontend-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$frontend-theme: mat.define-light-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+body {
+  // Apply the base theme at the root, so it will be inherited by the whole app.
+  @include mat.all-component-themes($frontend-theme);
+}
+
+/** Scheme */
+
+:root {
+  --color-background: #dadada;
+  --color-foreground: #0F0F0F;
+  --color-foreground-header1: rgb(73, 73, 73);
+  --color-foreground-header2: #343434;
+  --color-foreground-blue: #225db4;
+  --color-foreground-blue-lighter: #1566df;
+  --color-navbar-1: #141414;
+  --color-navbar-2: #191919;
+  --color-sheet: #ffffff;
+  --color-popup: #292929;
+  --color-row-different: rgb(30 30 30 / 75%);
+  --color-table-header-btn: rgb(47, 47, 47);
+  --color-table-header-btn-hover: rgb(56, 56, 56);
+  --color-table-header-btn-press: rgb(39, 39, 39);
+  --color-different-10:rgba(0, 0, 0, 0.1);
+  --color-different-30:rgb(0 0 0 / 30%);
+  --color-different-p15:rgba(255, 255, 255, 0.15);
+  --color-different-p20:rgba(255, 255, 255, 0.20);
+  --color-different-p30:rgba(255, 255, 255, 0.3);
+  --color-textbox-background: #505050;
+  --color-textbox-watermark: #ABABAB;
+  --color-theme: #FFBF00;//Amber
+  --color-label:#1a1e23;
+  --color-scrollbar-background: #2D2D30;
+  --color-scrollbar-foreground: #5A5A5A;
+  --color-scrollbar-foreground-hover: #878787;
+  --color-scrollbar-foreground-pressed: #A6A6A6;
+
+  --shadow-popup: 0 2px 3px #000;
+  --shadow-textbox: 0 2px 3px #000;
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  font-size: 14px;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  height: 100vh;
+}
+
+
+.mat-table {
+  overflow-x: scroll;
+}
+
+.mat-cell,
+.mat-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 10px;
+  line-break: unset;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.mat-row,
+.mat-header-row {
+  display: table-row;
+}
+
+
+

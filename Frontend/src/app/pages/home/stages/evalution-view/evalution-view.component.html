@@ -1,0 +1,65 @@
+<div class="evalution-view">
+    <div class="evalution-view__description">
+        <h1>
+            Kết quả dự đoán
+        </h1>
+        <div class="result-box input">
+            <div class="result-box__header">
+                <mat-icon fontIcon="list_alt"></mat-icon>
+                <span class="result-box__title">
+                    Trạng thái của chu kì được chọn
+                </span>
+            </div>
+            <div class="result-box__main">
+                <ul>
+                    @for(prop of props; track prop.propertyName) {
+                    <li [matTooltip]="prop.tooltip + ' = ' + result.predictingState[$index]">
+                        <span class="prop">{{prop.columnName}}: </span>
+                        <span>{{result.predictingState[$index] | number: '1.4-4'}}</span>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-box__header">
+                <mat-icon fontIcon="battery_4_bar"></mat-icon>
+                <span class="result-box__title">
+                    Dung lượng pin dự đoán
+                </span>
+            </div>
+            <div class="result-box__main">
+                <ul>
+                    <li>
+                        <span>{{result.Qi}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-box__header">
+                <mat-icon fontIcon="monitor_heart"></mat-icon>
+                <span class="result-box__title">
+                    Vòng đời còn lại dự đoán của Pin
+                </span>
+            </div>
+            <div class="result-box__main">
+                <ul>
+                    <li>
+                        <span>{{result.remain_cycle}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="evalution-view__panel">
+        <div>
+
+        </div>
+    </div>
+    <div class="evalution-view__main">
+
+    </div>
+</div>

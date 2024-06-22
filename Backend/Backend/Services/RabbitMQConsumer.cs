@@ -1,13 +1,14 @@
-﻿using Backend.Resources;
+﻿using Backend.Enums;
 using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
 namespace Backend.Services
 {
-    public class RabbitMQConsumer:IDisposable, IHostedService
+    public class RabbitMQConsumer : IDisposable, IHostedService
     {
         private readonly string _uri;
         private readonly ConnectionFactory factory;
@@ -37,7 +38,8 @@ namespace Backend.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "RabbitMQ connection error, retry in 5s");
+                    _logger.LogError("RabbitMQ connection error, retry in 5s");
+                    Debug.WriteLine(ex.Message);
                     await Task.Delay(5000);
                 }
             }
@@ -49,11 +51,27 @@ namespace Backend.Services
 
                 _hubContext.Clients.Client(json["connId"].ToString() ?? "").SendAsync("messageReceived", "queue.dataFace", msg);
             });
+
+            //Consume("queue.dataFace", (o, msg) =>
+            //{
+            //    string[] parts = msg.Split(",");
+            //    string userId = parts[0];
+            //    string message = parts[1];
+
+            //    _hubContext.Clients.Client(userId).SendAsync("messageReceived", "queue.dataFace", msg);
+            //});
+
+            //Consume("queue.dataFace1", (o, msg) =>
+            //{
+            //    _hubContext.Clients.All.SendAsync("messageReceived", "queue.dataFace1", msg);
+            //});
+
+            _logger.LogInformation("RabbitMQ Consumer started");
         }
 
         public void Consume(string queue, EventHandler<string> eventHandler)
         {
-            
+
             // Declare queue
             channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
@@ -96,23 +114,7 @@ namespace Backend.Services
         {
             _logger.LogInformation(message: $"RabitMQConsumer starting, rabbitmqUri: {_uri}");
 
-            await Listen();
-
-            //Consume("queue.dataFace", (o, msg) =>
-            //{
-            //    string[] parts = msg.Split(",");
-            //    string userId = parts[0];
-            //    string message = parts[1];
-
-            //    _hubContext.Clients.Client(userId).SendAsync("messageReceived", "queue.dataFace", msg);
-            //});
-
-            //Consume("queue.dataFace1", (o, msg) =>
-            //{
-            //    _hubContext.Clients.All.SendAsync("messageReceived", "queue.dataFace1", msg);
-            //});
-
-            _logger.LogInformation("RabbitMQ Consumer started");
+            Listen();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

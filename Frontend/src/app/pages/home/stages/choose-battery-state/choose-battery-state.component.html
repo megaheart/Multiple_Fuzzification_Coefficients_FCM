@@ -1,0 +1,73 @@
+<div class="choose-battery-state">
+    <div class="choose-battery-state__description">
+        <h1>
+            Chọn trạng thái của chu kì cần dự đoán
+        </h1>
+        <p>
+            Chu kì với trạng thái được chọn sẽ được dùng để dự đoán thời gian sống còn lại của pin tính từ chu kì này.
+        </p>
+        <p>
+            Chọn một chu kì mới có thể tiếp tục
+        </p>
+    </div>
+    <div class="choose-battery-state__panel">
+        <div>
+           
+        </div>
+        <div>
+            <button mat-flat-button mat-flat-button color="primary"
+                (click)="chooseBatteryOrdersRandom()">
+                Chọn ngẫu nhiên
+            </button>
+        </div>
+        <div>
+            <button mat-flat-button mat-flat-button color="primary"
+                (click)="nextStep()" [disabled]="selection.selected.length === 0">
+                Tiến hành dự đoán
+            </button>
+        </div>
+    </div>
+    <div class="choose-battery-state__main" #rightLayout>
+        <div class="table" style="display: none;" #dataTable>
+            <div class="table-main" style="overflow-x: auto;overflow-y: hidden;">
+                <table mat-table [dataSource]="dataSource" #tableBlock>
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef> Chọn </th>
+                        <td mat-cell *matCellDef="let row">
+                          <mat-radio-button (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(row) : null"
+                                        [checked]="selection.isSelected(row)"
+                                        color="primary">
+                          </mat-radio-button>
+                        </td>
+                    </ng-container>
+                    
+                    @for (column of columnInfos; track column.propertyName) {
+                        <ng-container [matColumnDef]="column.propertyName">
+                            <th mat-header-cell *matHeaderCellDef [matTooltip]="column.tooltip" 
+                                style="text-align: center;" 
+                                [style.min-width]="column.minWidth === null ? 'none' : column.minWidth + 'px'"> 
+                                {{column.columnName}} 
+                            </th>
+                            <td mat-cell *matCellDef="let element" [matTooltip]="column.tooltip"
+                                style="text-align: right;"> 
+                                @if (column.isNotDecimal) {
+                                    {{element[column.propertyName]}}
+                                } 
+                                @else {
+                                    {{element[column.propertyName] | number: '1.4-4'}}
+                                }
+                            </td>
+                        </ng-container>
+                    }
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+    </div>
+</div>
