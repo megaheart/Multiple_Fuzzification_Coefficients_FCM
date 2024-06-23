@@ -262,14 +262,14 @@ export class PredictionViewComponent {
           name: "Bắt đầu dự đoán dung lượng của chu kì Pin",
           code: "PredictingQi",
           status: "PENDING",
-          task: currentClass.waitInQueue.bind(currentClass),
+          task: currentClass.predictingQi.bind(currentClass),
           retry: currentClass.waitInQueueRetry.bind(currentClass)
         },
         {
           name: "Bắt đầu dự đoán vòng đời còn lại của chu kì Pin",
           code: "PredictingRemainCycle",
           status: "PENDING",
-          task: currentClass.waitInQueue.bind(currentClass),
+          task: currentClass.predictingRemainCycle.bind(currentClass),
           retry: currentClass.waitInQueueRetry.bind(currentClass)
         }
       ];

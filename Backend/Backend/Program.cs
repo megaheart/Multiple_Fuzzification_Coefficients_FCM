@@ -25,6 +25,13 @@ namespace Backend
 
             // Add services to the container.
             builder.Services.AddScoped<RabbitMQProducer>();
+            builder.Services.AddTransient<JsonSerializerOptions>(sp =>
+            {
+                var options = new JsonSerializerOptions();
+                options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.Converters.Add(new JsonStringEnumConverter());
+                return options;
+            });
 
 
             builder.Services.AddSignalR()

@@ -34,7 +34,6 @@ while redisDb is None:
         print("Retry connect to Redis in 5 seconds...")
         time.sleep(5)
 
-
 channel = connection.channel()
 channel.queue_declare(queue='queue.ai')
 channel.queue_declare(queue='queue.server')
@@ -57,10 +56,11 @@ def callback(ch, method, properties, body):
 
     # Response to server
     res = {
-        "IsSuccessful": True,
-        "ConnectionId": req['ConnectionId'],
-        "Type": "PredictingQi",
-        "Message": "Success",
+        "isSuccessful": True,
+        "connectionId": req['ConnectionId'],
+        "type": "PredictingQi",
+        "message": "Success",
+        "value": [] # list of double values
     }
     res = json.dumps(res)
     channel.basic_publish(exchange='', routing_key='queue.server', body=res)

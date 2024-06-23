@@ -1,0 +1,95 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+**/.git
+**/.DS_Store
+**/node_modules
+**/bower_components
+**/tmp
+**/temp
+**/build
+**/dist
+
+# Compiled output
+Frontend/dist
+Frontend/tmp
+Frontend/out-tsc
+Frontend/bazel-out
+
+# Node
+Frontend/node_modules
+Frontend/**/npm-debug.log
+Frontend/**/yarn-error.log
+
+# IDEs and editors
+Frontend/**/.idea/
+Frontend/**/.project
+Frontend/**/.classpath
+Frontend/**/.c9/
+Frontend/**/*.launch
+Frontend/**/.settings/
+Frontend/**/*.sublime-workspace
+
+# Visual Studio Code
+Frontend/**/.vscode/*
+!Frontend/**/.vscode/settings.json
+!Frontend/**/.vscode/tasks.json
+!Frontend/**/.vscode/launch.json
+!Frontend/**/.vscode/extensions.json
+Frontend/**/.history/*
+
+# Miscellaneous
+Frontend/.angular/cache
+Frontend/**/.sass-cache/
+Frontend/connect.lock
+Frontend/coverage
+Frontend/libpeerconnection.log
+Frontend/**/testem.log
+Frontend/typings
+
+# System files
+Frontend/**/.DS_Store
+Frontend/**/Thumbs.db
+Frontend/**/Dockerfile
+Frontend/**/docker-compose.yml
+
+# Python files
+AI/**/__pycache__
+
+# ASP.NET
+Backend/**/obj
+Backend/**/bin
+Backend/**/node_modules
+Backend/**/bower_components
+
+Backend/**/.classpath
+Backend/**/.dockerignore
+Backend/**/.env
+Backend/**/.git
+Backend/**/.gitignore
+Backend/**/.project
+Backend/**/.settings
+Backend/**/.toolstarget
+Backend/**/.vs
+Backend/**/.vscode
+Backend/**/*.*proj.user
+Backend/**/*.dbmdl
+Backend/**/*.jfm
+Backend/**/azds.yaml
+Backend/**/bin
+Backend/**/charts
+Backend/**/docker-compose*
+Backend/**/Dockerfile*
+Backend/**/node_modules
+Backend/**/npm-debug.log
+Backend/**/obj
+Backend/**/secrets.dev.yaml
+Backend/**/values.dev.yaml
+Backend/LICENSE
+Backend/README.md
+!Backend/**/.gitignore
+!Backend/.git/HEAD
+!Backend/.git/config
+!Backend/.git/packed-refs
+!Backend/.git/refs/heads/**
+Backend/**/.vs
+Backend/.vs

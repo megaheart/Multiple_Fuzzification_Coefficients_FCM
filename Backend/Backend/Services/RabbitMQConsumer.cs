@@ -19,14 +19,16 @@ namespace Backend.Services
         private readonly IMapper _mapper;
         private IConnection connection;
         private IModel channel;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        public RabbitMQConsumer(ILogger<RabbitMQConsumer> logger, IConfiguration configuration, IHubContext<SignalRHub> hubContext, IMapper mapper)
+        public RabbitMQConsumer(ILogger<RabbitMQConsumer> logger, IConfiguration configuration, IHubContext<SignalRHub> hubContext, IMapper mapper, JsonSerializerOptions jsonOptions)
         {
             _uri = configuration.GetConnectionString("RabbitMQ") ?? throw new Exception("rabbitmqUri phải khác null");
             factory = new ConnectionFactory() { Uri = new Uri(_uri) };
             _logger = logger;
             _hubContext = hubContext;
             _mapper = mapper;
+            _jsonOptions = jsonOptions;
         }
 
         public async Task Listen()
@@ -51,13 +53,9 @@ namespace Backend.Services
 
             Consume(QueueNames.Server, (o, msg) =>
             {
-                _logger.LogInformation("AI Server Response: " + msg);
+                var res = JsonSerializer.Deserialize<PredictBatteryLifeAiServerResponse>(msg, _jsonOptions);
 
-                var res = JsonSerializer.Deserialize<PredictBatteryLifeAiServerResponse>(msg);
-
-                _logger.LogInformation("AI Server Response Type: " + res.Type);
-
-                var client = _hubContext.Clients.Client(res.ConnectionId ?? "");
+                var client = _hubContext.Clients.Client(res?.ConnectionId ?? "");
                 if (client != null)
                 {
                     var response = _mapper.Map<PredictBatteryLifeResponse>(res);
@@ -96,7 +94,7 @@ namespace Backend.Services
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 eventHandler(this, message);
-                _logger.Log(LogLevel.Information, $"RabbitMQ message: {message}");
+                _logger.Log(LogLevel.Information, $"RabbitMQ HANDLED message: {message}");
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
             };
 
@@ -116,7 +114,7 @@ namespace Backend.Services
             {
                 var body = ea.Body.ToArray();
                 eventHandler(this, body);
-                _logger.Log(LogLevel.Information, $"RabbitMQ bin msg: length={body?.Length ?? 0}");
+                _logger.Log(LogLevel.Information, $"RabbitMQ HANDLED bin msg: length={body?.Length ?? 0}");
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
             };
 

@@ -30,9 +30,8 @@ FROM node-pnpm:20.14.0 AS frontend
 WORKDIR /src
 COPY ["./Frontend/package.json", "./"]
 RUN bash -c "npm install"
-COPY ["./Frontend/src", "./src"]
-COPY ["./Frontend/angular.json", "./Frontend/proxy.conf.json", "./"]
-COPY ["./Frontend/tsconfig.app.json", "./Frontend/tsconfig.json", "./Frontend/tsconfig.spec.json", "./"]
+COPY ["./Frontend/", "./"]
+# COPY ["./Frontend/angular.json", "./Frontend/proxy.conf.json", "./Frontend/tsconfig.app.json", "./Frontend/tsconfig.json", "./Frontend/tsconfig.spec.json", "./"]
 RUN bash -c "npm run build -- --configuration production --output-path=./dist/frontend/browser"
 
 # Build the final image
