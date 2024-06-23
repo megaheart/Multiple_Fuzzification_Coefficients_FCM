@@ -4,6 +4,7 @@ import ssl
 import binascii
 import json
 import time
+import redis
 
 connection = None
 
@@ -20,18 +21,52 @@ while connection is None:
         print("Retry connect to RabbitMQ in 5 seconds...")
         time.sleep(5)
 
+redisDb = None
+
+while redisDb is None:
+    try:
+        redisDb = redis.Redis(
+            host='localhost',
+            port=6379,
+            db=0
+        )
+    except Exception as e:
+        print("Retry connect to Redis in 5 seconds...")
+        time.sleep(5)
+
+
 channel = connection.channel()
 channel.queue_declare(queue='queue.ai')
 channel.queue_declare(queue='queue.server')
 # channel.queue_declare(queue='queue.dataFace')
 
-
 def callback(ch, method, properties, body):
+    global redisDb
     print(" [x] Received %r" % body)
-    dict = json.loads(body)
-    print(dict['name'], dict['age'], dict)
-    channel.basic_publish(exchange='', routing_key='queue.server', body=body)
+    req = json.loads(body)
+    # print(dict['SupervisedBatteryOrders'], dict['PredictingState'], 
+    #       dict['PredictingBatteryOrder'], dict['PredictingCycleOrder'], 
+    #       dict['ConnectionId'], dict)
+    # check if the key exists
+    if not redisDb.exists("conn:" + req['ConnectionId']):
+        print("Key does not exist")
+        ch.basic_ack(delivery_tag = method.delivery_tag)
+        return
+    
+    print("Key = conn:", req['ConnectionId'], ", Value = ", redisDb.get("conn:" + req['ConnectionId']))
+
+    # Response to server
+    res = {
+        "IsSuccessful": True,
+        "ConnectionId": req['ConnectionId'],
+        "Type": "PredictingQi",
+        "Message": "Success",
+    }
+    res = json.dumps(res)
+    channel.basic_publish(exchange='', routing_key='queue.server', body=res)
     ch.basic_ack(delivery_tag = method.delivery_tag)
+    redisDb.delete("conn:" + req['ConnectionId'])
+    print("Process Completed")
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(on_message_callback=callback, queue='queue.ai', auto_ack=False)

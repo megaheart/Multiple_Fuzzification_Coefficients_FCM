@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     "Kết quả/Đánh giá dự đoán",
   ];
 
-  currentCatalogueIndex:number = 0;
+  currentCatalogueIndex:number = 2;
   disabledPreviousStepBtn:boolean = true;
   disabledResetBtn:boolean = false;
   supervisedBatteryOrders: number[] = [];
@@ -47,11 +47,11 @@ export class HomeComponent implements OnInit, OnDestroy{
     cycle_order:number, Qi:number, 
     remain_cycle:number
   }>({
-    predictingState: [0, 1, 2, 3, 4],
-    battery_order: 0,
-    cycle_order: 0,
-    Qi: 0,
-    remain_cycle: 0
+    predictingState: [0, 1, 2, 3, 4, 5, 6, 7, 8 ,9],
+    battery_order: 20,
+    cycle_order: 0.1,
+    Qi: 0.3,
+    remain_cycle: 100
   });
 
   constructor() {

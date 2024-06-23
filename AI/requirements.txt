@@ -4,3 +4,4 @@ ortools
 matplotlib
 scipy
 pika
+redis

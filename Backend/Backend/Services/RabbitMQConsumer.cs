@@ -1,4 +1,6 @@
-﻿using Backend.Enums;
+﻿using AutoMapper;
+using Backend.Enums;
+using Backend.Models;
 using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -14,15 +16,17 @@ namespace Backend.Services
         private readonly ConnectionFactory factory;
         private readonly ILogger<RabbitMQConsumer> _logger;
         private readonly IHubContext<SignalRHub> _hubContext;
+        private readonly IMapper _mapper;
         private IConnection connection;
         private IModel channel;
 
-        public RabbitMQConsumer(ILogger<RabbitMQConsumer> logger, IConfiguration configuration, IHubContext<SignalRHub> hubContext)
+        public RabbitMQConsumer(ILogger<RabbitMQConsumer> logger, IConfiguration configuration, IHubContext<SignalRHub> hubContext, IMapper mapper)
         {
             _uri = configuration.GetConnectionString("RabbitMQ") ?? throw new Exception("rabbitmqUri phải khác null");
             factory = new ConnectionFactory() { Uri = new Uri(_uri) };
             _logger = logger;
             _hubContext = hubContext;
+            _mapper = mapper;
         }
 
         public async Task Listen()
@@ -47,9 +51,19 @@ namespace Backend.Services
 
             Consume(QueueNames.Server, (o, msg) =>
             {
-                var json = JsonSerializer.Deserialize<Dictionary<string, object>>(msg);
+                _logger.LogInformation("AI Server Response: " + msg);
 
-                _hubContext.Clients.Client(json["connId"].ToString() ?? "").SendAsync("messageReceived", "queue.dataFace", msg);
+                var res = JsonSerializer.Deserialize<PredictBatteryLifeAiServerResponse>(msg);
+
+                _logger.LogInformation("AI Server Response Type: " + res.Type);
+
+                var client = _hubContext.Clients.Client(res.ConnectionId ?? "");
+                if (client != null)
+                {
+                    var response = _mapper.Map<PredictBatteryLifeResponse>(res);
+
+                    client.SendAsync(SignalrEvents.PredictProgress, response);
+                }
             });
 
             //Consume("queue.dataFace", (o, msg) =>

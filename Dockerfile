@@ -1,11 +1,14 @@
-FROM aspnet-python-rabbitmq:latest AS base
+FROM aspnet-python-rabbitmq-redis:latest AS base
 WORKDIR /app
-COPY ["./AI/install_pkg.sh", "./AI/"]
 # Get python3 and pip
-RUN apt-get update && apt-get install -y python3-pip
+# RUN apt-get update && apt-get install -y python3-pip
+
 # Install python packages
-RUN chmod +x ./AI/install_pkg.sh && \
-    ./AI/install_pkg.sh
+# COPY ["./AI/install_pkg.sh", "./AI/"]
+# RUN chmod +x ./AI/install_pkg.sh && \
+#     ./AI/install_pkg.sh
+COPY ["./AI/requirements.txt", "./AI/"]
+RUN /opt/py3env/bin/pip install -r ./AI/requirements.txt
 
 # Build the backend
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -25,10 +28,12 @@ RUN dotnet publish "./Backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p
 # Build angular nodejs frontend
 FROM node-pnpm:20.14.0 AS frontend
 WORKDIR /src
-COPY ["./Frontend/package.json", "./Frontend/package-lock.json", "./"]
-RUN bash -c "pnpm install"
-COPY ["./Frontend", "./"]
-RUN bash -c "pnpm run build:prod"
+COPY ["./Frontend/package.json", "./"]
+RUN bash -c "npm install"
+COPY ["./Frontend/src", "./src"]
+COPY ["./Frontend/angular.json", "./Frontend/proxy.conf.json", "./"]
+COPY ["./Frontend/tsconfig.app.json", "./Frontend/tsconfig.json", "./Frontend/tsconfig.spec.json", "./"]
+RUN bash -c "npm run build -- --configuration production --output-path=./dist/frontend/browser"
 
 # Build the final image
 FROM base AS server
@@ -37,7 +42,7 @@ WORKDIR /app
 COPY --from=publish /app/publish ./Backend
 # COPY ["./AI/requirements.txt", "./AI/"]
 # COPY ["./Backend/Backend/wwwroot", "./Backend/wwwroot"]
-COPY --from=frontend /src/dist/frontend/browser/ ./Backend/wwwroot
+COPY --from=frontend /src/dist/frontend/browser/* ./Backend/wwwroot
 
 COPY ["./AI/Components", "./AI/Components"]
 COPY ["./AI/Data", "./AI/Data"]

@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './prediction-view.component.scss'
 })
 export class PredictionViewComponent {
-  private _hubConnection: signalR.HubConnection;
+  private _hubConnection?: signalR.HubConnection;
 
   @Input() supervisedBatteryOrders: number[] = [];
   @Input() predictingState: number[] = [];
@@ -24,6 +24,7 @@ export class PredictionViewComponent {
 
   @Output() nextStepEvent = new EventEmitter<{ predictingState: number[], battery_order: number, cycle_order: number, Qi: number, remain_cycle: number }>();
 
+  isServerRunning = false;
   isRetryBtnDisabled = signal(true);
   predictionStages: WritableSignal<{
     name: string,
@@ -35,10 +36,6 @@ export class PredictionViewComponent {
   serverResponse: PredictBatteryLifeResponse[] = [];
 
   constructor() {
-    this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl("/hub")
-      .build();
-
     this.predictionStages = this.setupPredictionStages();
   }
 
@@ -47,8 +44,12 @@ export class PredictionViewComponent {
   }
 
   ngOnDestroy() {
-    this._hubConnection.off(SignalrEvents.PREDICT_PROGRESS);
-    this._hubConnection.stop();
+    this.disconnectFromServer();
+  }
+
+  disconnectFromServer() {
+    this._hubConnection?.off(SignalrEvents.PREDICT_PROGRESS);
+    this._hubConnection?.stop();
   }
 
   async processPrediction() {
@@ -79,6 +80,7 @@ export class PredictionViewComponent {
           });
           alert(error);
           if (retry) this.isRetryBtnDisabled.set(false);
+          this.disconnectFromServer();
           return;
         }
       }
@@ -94,9 +96,17 @@ export class PredictionViewComponent {
 
 
   async connectToServer(): Promise<void> {
+    this._hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl("/hub")
+      .build();
     let conn = this._hubConnection;
     try {
+      conn.onclose(() => {
+        this.isServerRunning = false;
+        console.log("Connection closed");
+      });
       await conn.start();
+      this.isServerRunning = true;
       conn.on(SignalrEvents.PREDICT_PROGRESS, (res: PredictBatteryLifeResponse) => {
         this.serverResponse.push(res);
         console.log("SignalR", res);
@@ -125,7 +135,7 @@ export class PredictionViewComponent {
       //   predictingBatteryOrder: this.predictingBatteryOrder,
       //   predictingCycleOrder: this.predictingCycleOrder
       // });
-      await this._hubConnection.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
+      await this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
         supervisedBatteryOrders: [1, 2, 3, 4, 5],
         predictingState: [1, 2, 3, 4, 5],
         predictingBatteryOrder: 1,
@@ -138,6 +148,9 @@ export class PredictionViewComponent {
     }
 
     for (let i = 0; i < 10; i++) {
+      if (this.isServerRunning === false) {
+        throw new Error("Mất kết nối đến máy chủ! Để thử lại vui lòng chọn nút 'Thử lại'.");
+      }
       let errorRes = this.serverResponse.find(x => x.type === 'BadRequest' || x.isSuccessful === false);
       if (errorRes) {
         throw new Error((errorRes.message + ". Để thử lại vui lòng chọn nút 'Thử lại'.").replace('..', '.'));
@@ -153,6 +166,9 @@ export class PredictionViewComponent {
     }
 
     while (true) {
+      if (this.isServerRunning === false) {
+        throw new Error("Mất kết nối đến máy chủ! Để thử lại vui lòng chọn nút 'Thử lại'.");
+      }
       let res = this.serverResponse.find(x => x.type === 'PredictingQi');
       if (res) {
         return;
@@ -174,6 +190,9 @@ export class PredictionViewComponent {
 
   async predictingQi(): Promise<void> {
     while (true) {
+      if (this.isServerRunning === false) {
+        throw new Error("Mất kết nối đến máy chủ! Để thử lại vui lòng chọn nút 'Thử lại'.");
+      }
       let res = this.serverResponse.find(x => x.type === 'PredictingRemainCycle');
       if (res) {
         return;
@@ -184,6 +203,9 @@ export class PredictionViewComponent {
 
   async predictingRemainCycle(): Promise<void> {
     while (true) {
+      if (this.isServerRunning === false) {
+        throw new Error("Mất kết nối đến máy chủ! Để thử lại vui lòng chọn nút 'Thử lại'.");
+      }
       let res = this.serverResponse.find(x => x.type === 'ResultAndEvalution');
       if (res) {
         return;
@@ -203,7 +225,7 @@ export class PredictionViewComponent {
       predictingCycleOrder: 1,
     };
 
-    this._hubConnection.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, json)
+    this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, json)
       .catch(err => {
         console.error(err);
       });

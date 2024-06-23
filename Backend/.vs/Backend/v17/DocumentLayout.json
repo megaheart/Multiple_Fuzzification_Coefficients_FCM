@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\enums\\predictbatteryliferesponsetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\enums\\predictbatteryliferesponsetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,18 +13,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\rabbitmqconsumer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\rabbitmqconsumer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\controllers\\batteryinfoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\controllers\\batteryinfoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\loadfilestocacheextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\loadfilestocacheextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,64 +42,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeDocumentMoniker": "Backend\\Program.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeToolTip": "Backend\\Program.cs",
-              "ViewState": "AQIAAC0AAAAAAAAAAADwv1MAAAA4AAAA",
+              "ViewState": "AQIAADIAAAAAAAAAAAAgwFcAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T16:46:50.444Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BatteryInfosController.cs",
-              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Controllers\\BatteryInfosController.cs",
-              "RelativeDocumentMoniker": "Backend\\Controllers\\BatteryInfosController.cs",
-              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Controllers\\BatteryInfosController.cs",
-              "RelativeToolTip": "Backend\\Controllers\\BatteryInfosController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABkAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T16:36:15.378Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LoadFilesToCacheExtension.cs",
-              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\LoadFilesToCacheExtension.cs",
-              "RelativeDocumentMoniker": "Backend\\Services\\LoadFilesToCacheExtension.cs",
-              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\LoadFilesToCacheExtension.cs",
-              "RelativeToolTip": "Backend\\Services\\LoadFilesToCacheExtension.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAABgAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T16:29:27.076Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PredictBatteryLifeResponseTypes.cs",
-              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Enums\\PredictBatteryLifeResponseTypes.cs",
-              "RelativeDocumentMoniker": "Backend\\Enums\\PredictBatteryLifeResponseTypes.cs",
-              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Enums\\PredictBatteryLifeResponseTypes.cs",
-              "RelativeToolTip": "Backend\\Enums\\PredictBatteryLifeResponseTypes.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-21T06:42:15.125Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SignalRHub.cs",
-              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
-              "RelativeDocumentMoniker": "Backend\\Services\\SignalRHub.cs",
-              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
-              "RelativeToolTip": "Backend\\Services\\SignalRHub.cs",
-              "ViewState": "AQIAACEAAAAAAAAAAAAowD8AAAA2AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T13:05:47.06Z",
+              "WhenOpened": "2024-06-23T07:23:28.981Z",
               "EditorCaption": ""
             },
             {
@@ -122,9 +61,22 @@
               "RelativeDocumentMoniker": "Backend\\Services\\RabbitMQConsumer.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\RabbitMQConsumer.cs",
               "RelativeToolTip": "Backend\\Services\\RabbitMQConsumer.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAwCoAAAArAAAA",
+              "ViewState": "AQIAABkAAAAAAAAAAAAuwDkAAABPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T11:34:57.678Z",
+              "WhenOpened": "2024-06-23T05:05:08.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SignalRHub.cs",
+              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
+              "RelativeDocumentMoniker": "Backend\\Services\\SignalRHub.cs",
+              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
+              "RelativeToolTip": "Backend\\Services\\SignalRHub.cs",
+              "ViewState": "AQIAACoAAAAAAAAAAAAkwHgAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-24T13:05:47.06Z",
               "EditorCaption": ""
             }
           ]

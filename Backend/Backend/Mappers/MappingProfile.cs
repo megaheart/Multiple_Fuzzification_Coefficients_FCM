@@ -8,6 +8,10 @@ namespace Backend.Mappers
         public MappingProfile()
         {
             CreateMap<BatteryCycleState, BatteryCycleStateDTO>();
+            CreateMap<PredictBatteryLifeRequest, PredictBatteryLifeAiServerRequest>()
+                .ForAllMembers(opt => 
+                    opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null))); ;
+            CreateMap<PredictBatteryLifeAiServerResponse, PredictBatteryLifeResponse>();
         }
     }
 }

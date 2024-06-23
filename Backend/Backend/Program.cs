@@ -6,9 +6,11 @@ using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using StackExchange.Redis;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Backend
@@ -29,6 +31,7 @@ namespace Backend
                 .AddJsonProtocol(options =>
                 {
                     options.PayloadSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
             builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
@@ -78,6 +81,13 @@ namespace Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddMemoryCache();
+            //builder.Services.AddStackExchangeRedisCache(options => {
+            //    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+            //});
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(
+                builder.Configuration.GetConnectionString("Redis") ?? throw new Exception("Redis Connection String doesn't exist.")));
+
             builder.Services.AddAutoMapper((serviceProvider, automapper) =>
             {
                 automapper.AddProfile<MappingProfile>();

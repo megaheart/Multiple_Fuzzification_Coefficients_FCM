@@ -1,4 +1,4 @@
-@use '../../../../../styles.scss' as styles;
+@use '../../../../../theme' as styles;
 @use '@angular/material' as mat;
 
 $accent-color: mat.get-theme-color(styles.$frontend-theme, accent, 800);
