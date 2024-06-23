@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\controllers\\actionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\controllers\\actionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\services\\signalrhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A576B137-A8AB-431C-A9F1-E65832418979}|Backend\\Backend.csproj|c:\\users\\linh2\\source\\repos\\multiple_fuzzification_coefficients_fcm\\backend\\backend\\services\\rabbitmqconsumer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -43,19 +47,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ActionsController.cs",
+              "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Controllers\\ActionsController.cs",
+              "RelativeDocumentMoniker": "Backend\\Controllers\\ActionsController.cs",
+              "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Controllers\\ActionsController.cs",
+              "RelativeToolTip": "Backend\\Controllers\\ActionsController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-23T09:52:25.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeDocumentMoniker": "Backend\\Program.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Program.cs",
               "RelativeToolTip": "Backend\\Program.cs",
-              "ViewState": "AQIAADIAAAAAAAAAAAAgwFcAAAAMAAAA",
+              "ViewState": "AQIAAE0AAAAAAAAAAAAgwGgAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-23T07:23:28.981Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "RabbitMQConsumer.cs",
               "DocumentMoniker": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\RabbitMQConsumer.cs",
               "RelativeDocumentMoniker": "Backend\\Services\\RabbitMQConsumer.cs",
@@ -63,8 +80,7 @@
               "RelativeToolTip": "Backend\\Services\\RabbitMQConsumer.cs",
               "ViewState": "AQIAABkAAAAAAAAAAAAuwDkAAABPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T05:05:08.663Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-23T05:05:08.663Z"
             },
             {
               "$type": "Document",
@@ -74,7 +90,7 @@
               "RelativeDocumentMoniker": "Backend\\Services\\SignalRHub.cs",
               "ToolTip": "C:\\Users\\linh2\\source\\repos\\Multiple_Fuzzification_Coefficients_FCM\\Backend\\Backend\\Services\\SignalRHub.cs",
               "RelativeToolTip": "Backend\\Services\\SignalRHub.cs",
-              "ViewState": "AQIAACoAAAAAAAAAAAAkwHgAAAArAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-24T13:05:47.06Z",
               "EditorCaption": ""
