@@ -5,6 +5,7 @@ import binascii
 import json
 import time
 import redis
+import procedures as proc
 
 connection = None
 
@@ -15,6 +16,7 @@ while connection is None:
             port=5672,
             virtual_host='/',
             credentials=pika.PlainCredentials('admin1','123456'),
+            heartbeat=0 
             # ssl_options=pika.SSLOptions(ssl.create_default_context()),
         ))
     except Exception as e:
@@ -46,6 +48,12 @@ def callback(ch, method, properties, body):
     # print(dict['SupervisedBatteryOrders'], dict['PredictingState'], 
     #       dict['PredictingBatteryOrder'], dict['PredictingCycleOrder'], 
     #       dict['ConnectionId'], dict)
+    supervisedBatteryOrders = req['SupervisedBatteryOrders']
+    predictingState = req['PredictingState']
+    predictingBatteryOrder = req['PredictingBatteryOrder']
+    predictingCycleOrder = req['PredictingCycleOrder']
+    connectionId = req['ConnectionId']
+
     # check if the key exists
     if not redisDb.exists("conn:" + req['ConnectionId']):
         print("Key does not exist")
@@ -55,15 +63,27 @@ def callback(ch, method, properties, body):
     print("Key = conn:", req['ConnectionId'], ", Value = ", redisDb.get("conn:" + req['ConnectionId']))
 
     # Response to server
-    res = {
-        "isSuccessful": True,
-        "connectionId": req['ConnectionId'],
-        "type": "PredictingQi",
-        "message": "Success",
-        "value": [] # list of double values
-    }
-    res = json.dumps(res)
+    # res = {
+    #     "isSuccessful": True,
+    #     "connectionId": req['ConnectionId'],
+    #     "type": "PredictingQi",
+    #     "message": "Success",
+    #     "value": [] # list of double values
+    # }
+    # res = json.dumps(res)
+    res = proc.start_predict_capacity_response(req['ConnectionId'])
     channel.basic_publish(exchange='', routing_key='queue.server', body=res)
+    print(" [x] Sent %r" % res)
+    capacity = proc.predict_capacity(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder)
+    res = proc.start_predict_remain_life_response(req['ConnectionId'])
+    channel.basic_publish(exchange='', routing_key='queue.server', body=res)
+    print(" [x] Sent %r" % res)
+    remain_life = proc.predict_remain_life(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder, capacity)
+    res = proc.finish_predict_response(req['ConnectionId'], [capacity, remain_life])
+    channel.basic_publish(exchange='', routing_key='queue.server', body=res)
+    print(" [x] Sent %r" % res)
+
+    # ACK
     ch.basic_ack(delivery_tag = method.delivery_tag)
     redisDb.delete("conn:" + req['ConnectionId'])
     print("Process Completed")

@@ -45,7 +45,7 @@ COPY --from=frontend /src/dist/frontend/browser/* ./Backend/wwwroot
 
 COPY ["./AI/Components", "./AI/Components"]
 COPY ["./AI/Data", "./AI/Data"]
-COPY ["./AI/ai_server.py", "./AI/"]
+COPY ["./AI/ai_server.py", "./AI/ssmc_fcm.py", "./AI/procedures.py", "./AI/"]
 
 EXPOSE 80
 EXPOSE 443

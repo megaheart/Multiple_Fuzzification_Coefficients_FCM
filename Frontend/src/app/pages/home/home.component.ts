@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     "Kết quả/Đánh giá dự đoán",
   ];
 
-  currentCatalogueIndex:number = 2;
+  currentCatalogueIndex:number = 0;
   disabledPreviousStepBtn:boolean = true;
   disabledResetBtn:boolean = false;
   supervisedBatteryOrders: number[] = [];
@@ -93,8 +93,8 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.disabledPreviousStepBtn = true;
     this.disabledResetBtn = true;
   }
-  step3(result :
-    {predictingState:number[], battery_order:number, cycle_order:number, Qi:number, remain_cycle:number}){
+  step3(result : {predictingState:number[], battery_order:number, cycle_order:number, Qi:number, remain_cycle:number}){
+    console.log("step3", result);
     this.result.set(result);
     this.currentCatalogueIndex = 3;
     this.disabledPreviousStepBtn = true;

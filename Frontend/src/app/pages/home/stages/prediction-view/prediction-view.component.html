@@ -7,10 +7,29 @@
             Dự đoán dung lượng pin và thời gian sống còn lại của pin tại chu kì được chọn dựa vào trạng thái của chu kì đó.
         </p>
         <p>
-            Giao diện hiển thị tiến độ thực hiện của quá trình dự đoán.
+            Các trạng thái của mỗi bước trong quy trình:
         </p>
+        <ul>
+            <li>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class="mat-icon pending"
+                                        fontIcon="pending"></mat-icon> - Những bước có biểu tượng này vẫn chưa đến lượt thực hiện.
+            </li>
+            <li>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class="mat-icon processing"
+                                        fontIcon="cached"></mat-icon> - Bước có biểu tượng này đang trong quá trình thực hiện.
+            </li>
+            <li>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class="mat-icon done"
+                                        fontIcon="task_alt"></mat-icon> - Những bước có biểu tượng này là những bước đã được hoàn thành.
+            </li>
+            <li>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class="mat-icon error"
+                                        fontIcon="error"></mat-icon> - Bước có biểu tượng này chứng tỏ đã xảy ra lỗi tại bước này.
+            </li>
+        </ul>
         <p>
-            Hệ thống sẽ tự động chuyển sang bước sau khi dự đoán hoàn tất.
+            Nếu xảy ra lỗi, hãy cố gắng bấm nút <b>Thử lại</b> để thực hiện lại quá trình dự đoán. Nếu nút <b>Thử lại</b> không hoạt động, 
+            hãy tải lại trang.
         </p>
     </div>
     <div class="prediction-view__panel">

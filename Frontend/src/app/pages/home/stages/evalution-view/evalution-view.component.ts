@@ -37,6 +37,7 @@ const PROPS : {
   columnName: string,
   propertyName: string,
   tooltip: string,
+  unit: string
 }[] = [
   // {
   //   columnName: 'Pin',
@@ -52,45 +53,54 @@ const PROPS : {
     columnName: 'c1a_I_dt',
     propertyName: 'c1a_I_dt',
     tooltip: 'Điện lượng Pha 1a',
+    unit: 'C'
   },
   {
     columnName: 'c1a_avg_T',
     propertyName: 'c1a_avg_T',
     tooltip: 'Nhiệt độ trung bình Pha 1a',
+    unit: '°C'
   },
   {
     columnName: 'c1a_avg_I',
     propertyName: 'c1a_avg_I',
     tooltip: 'Cường độ dòng điện trung bình Pha 1a',
+    unit: 'A'
   },
   {
     columnName: 'c1_max_I',
     propertyName: 'c1_max_I',
     tooltip: 'Cường độ dòng điện cực đại Pha 1',
+    unit: 'A'
   },
   {
     columnName: 'c2_max_I',
     propertyName: 'c2_max_I',
     tooltip: 'Cường độ dòng điện cực đại Pha 2',
+    unit: 'A'
   },
   {
     columnName: 'c1_max_T',
     propertyName: 'c1_max_T',
     tooltip: 'Nhiệt độ cực đại Pha 1',
+    unit: '°C'
   },
   {
     columnName: 'c1_min_T',
     propertyName: 'c1_min_T',
     tooltip: 'Nhiệt độ cực tiểu Pha 1',
+    unit: '°C'
   },
   {
     columnName: 'c2_max_T',
     propertyName: 'c2_max_T',
     tooltip: 'Nhiệt độ cực đại Pha 2',
+    unit: '°C'
   },
   {
     columnName: 'c2_min_T',
     propertyName: 'c2_min_T',
     tooltip: 'Nhiệt độ cực tiểu Pha 2',
+    unit: '°C'
   }
 ];

@@ -3,6 +3,23 @@
         <h1>
             Kết quả dự đoán
         </h1>
+        <p>
+            Bảng <b>Trạng thái của chu kì được chọn</b> hiển thị lại các thuộc tính của chu kỳ đầu vào cần dự đoán.
+        </p>
+        <p>
+            Kết quả dự đoán của 2 quá trình dự đoán dung lượng Pin và dự đoán vòng đời Pin lần lượt sẽ được hiển thị tại 2 bảng 
+            <b>Dung lượng pin dự đoán</b> và <b>Vòng đời còn lại dự đoán của Pin</b>.
+        </p>
+        <p>
+            Nếu muốn thực hiện dự đoán cho một chu kỳ đầu vào khác, vui lòng bấm nút <b>Đặt lại</b> góc trên bên trái hoặc tải lại trang.
+        </p>
+    </div>
+    <div class="evalution-view__panel">
+        <div>
+
+        </div>
+    </div>
+    <div class="evalution-view__main">
         <div class="result-box input">
             <div class="result-box__header">
                 <mat-icon fontIcon="list_alt"></mat-icon>
@@ -15,14 +32,14 @@
                     @for(prop of props; track prop.propertyName) {
                     <li [matTooltip]="prop.tooltip + ' = ' + result.predictingState[$index]">
                         <span class="prop">{{prop.columnName}}: </span>
-                        <span>{{result.predictingState[$index] | number: '1.4-4'}}</span>
+                        <span>{{result.predictingState[$index] | number: '1.4-4'}} {{prop.unit}}</span>
                     </li>
                     }
                 </ul>
             </div>
         </div>
 
-        <div class="result-box">
+        <div class="result-box capacity">
             <div class="result-box__header">
                 <mat-icon fontIcon="battery_4_bar"></mat-icon>
                 <span class="result-box__title">
@@ -32,13 +49,13 @@
             <div class="result-box__main">
                 <ul>
                     <li>
-                        <span>{{result.Qi}}</span>
+                        <span>{{result.Qi | number: '1.4-4'}} C</span>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <div class="result-box">
+        <div class="result-box remain-life">
             <div class="result-box__header">
                 <mat-icon fontIcon="monitor_heart"></mat-icon>
                 <span class="result-box__title">
@@ -48,18 +65,10 @@
             <div class="result-box__main">
                 <ul>
                     <li>
-                        <span>{{result.remain_cycle}}</span>
+                        <span>{{result.remain_cycle | number: '1.0-0'}} chu kì</span>
                     </li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="evalution-view__panel">
-        <div>
-
-        </div>
-    </div>
-    <div class="evalution-view__main">
-
     </div>
 </div>

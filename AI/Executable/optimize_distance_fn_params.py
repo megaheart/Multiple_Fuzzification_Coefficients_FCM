@@ -142,7 +142,8 @@ def pbm_inversed_loss(X:np.ndarray, Y:np.ndarray):
 print("Prepare variables")
 epochs = 1000
 loss_fn = pbm_inversed_loss(train_X, Y[:train_size])
-distance_params = torch.full((9, 1), 1.0).float()
+distance_params = torch.tensor([3.0231,  0.0293,  0.0216,  0.0486, -0.0429, -0.0182,  0.0276,  0.0502,
+        -0.0481]).float()
 distance_params.requires_grad_(True)
 print(distance_params)
 learning_rate = 3e-2

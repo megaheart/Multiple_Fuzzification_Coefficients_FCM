@@ -3,5 +3,7 @@ pandas
 ortools
 matplotlib
 scipy
+scikit-learn
 pika
 redis
+sympy

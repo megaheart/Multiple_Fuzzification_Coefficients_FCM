@@ -25,23 +25,35 @@ print("Load the data")
 data_path = path + "/Data/battery_cycles.csv"
 dataframe = pd.read_csv(data_path)
 
-# Split train and test
-test_battery_orders = [82, 16, 4, 96, 36, 32, 29, 18, 14]
-print(test_battery_orders)
+remain_cycles = dataframe[["cycle_order"]].to_numpy()
 
+begin_idx = 0
+
+for i in range(1, 125):
+  len_cycles = len(dataframe[dataframe['battery_order'] == i])
+  end_idx = begin_idx + len_cycles
+  remain_cycles[begin_idx:end_idx] = np.arange(len_cycles, 0, -1).reshape(-1, 1)
+  begin_idx = end_idx
+
+dataframe["remain_life"] = remain_cycles
+
+# Split train and test
+test_battery_orders = [96, 28, 29]
+print(test_battery_orders)
+battery_cycles_count = [len(dataframe[dataframe['battery_order'] == i]) for i in range(1, 125)]
 terribled_battery_orders = [15, 51, 117, 118, 119, 120]
 
-train_battery_orders = [i for i in range(1, 125) if i not in test_battery_orders and i not in terribled_battery_orders]
+train_battery_orders = [i for i in range(1, 125) if i not in test_battery_orders and i not in terribled_battery_orders                                                             and battery_cycles_count[i - 1] < 900]
 
 train_X = dataframe[dataframe['battery_order'].isin(train_battery_orders)]\
-    [["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T"]]\
+    [["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T", "Qi"]]\
     .to_numpy()
-train_Qi = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["Qi"]]\
+train_t = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["remain_life"]]\
     .to_numpy()
 test_X = dataframe[dataframe['battery_order'].isin(test_battery_orders)]\
-    [["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T"]]\
+    [["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T", "Qi"]]\
     .to_numpy()
-test_Qi = dataframe[dataframe['battery_order'].isin(test_battery_orders)][["Qi"]]\
+test_t = dataframe[dataframe['battery_order'].isin(test_battery_orders)][["remain_life"]]\
     .to_numpy()
 
 battery_cycles_count = [len(dataframe[dataframe['battery_order'] == i]) for i in range(1, 125)]
@@ -53,31 +65,26 @@ train_size, test_size = len(train_X), len(test_X)
 scaler = MinMaxScaler()
 train_X = scaler.fit_transform(train_X)
 test_X = scaler.transform(test_X)
+
 X = np.concatenate((train_X, test_X), axis=0)
 N = len(X)
 Y = np.full(N, np.nan)
-elements_Qi = np.concatenate((train_Qi, test_Qi), axis=0)
+elements_t = np.concatenate((train_t, test_t), axis=0)
 
 # Quantiles the Qi
 print("Labeling")
-i_Qi = np.argsort(train_Qi, axis=0)
-clusters_Qi = np.zeros(C)
+i_t = np.argsort(train_t, axis=0)
+clusters_t = np.zeros(C)
 
 idx_start = 0
-avg_size = len(train_Qi) // C
+avg_size = len(train_t) // C
 for i in range(C):
     idx_end = i * avg_size + avg_size
     if i == C - 1:
-        idx_end = len(train_Qi)
-    Y[i_Qi[idx_start:idx_end]] = i
-    clusters_Qi[i] = np.mean(train_Qi[i_Qi[idx_start:idx_end]])
+        idx_end = len(train_t)
+    Y[i_t[idx_start:idx_end]] = i
+    clusters_t[i] = np.mean(train_t[i_t[idx_start:idx_end]])
     idx_start = idx_end
-
-test_Y = np.full(test_size, np.nan)
-for i in range(train_size, N):
-    d = np.abs(clusters_Qi - elements_Qi[i])
-    cluster_idx = np.argmin(d)
-    test_Y[i - train_size] = cluster_idx
 
 for i in range(C):
     if np.any(Y == i):
@@ -135,7 +142,7 @@ class BatteryDataset(Dataset):
         return anchor_element, positive_element, negative_element
         
 class TripletLoss(torch.nn.Module):
-    def __init__(self, margin=1.0):
+    def __init__(self, margin=0.5):
         super(TripletLoss, self).__init__()
         self.margin = margin
         
@@ -144,16 +151,10 @@ class TripletLoss(torch.nn.Module):
     
     def forward(self, anchor: torch.Tensor, positive: torch.Tensor, negative: torch.Tensor, \
                     distance_params: torch.Tensor) -> torch.Tensor:
-        # distance_positive = self.calc_euclidean(anchor, positive)
-        # distance_negative = self.calc_euclidean(anchor, negative)
-        # dim = len(distance_params)
-        # losses = torch.relu(distance_positive - distance_negative + self.margin)
+        dim = 10
         # regularization = 1000 * (torch.sum(distance_params ** 2) - dim) ** 2
 
-        # return losses.mean() + regularization
-
-        dim = 9
-        distance_params = distance_params / torch.sum(distance_params) * dim
+        distance_params = distance_params / torch.sum(distance_params) * 10
 
         anchor = anchor * distance_params
         positive = positive * distance_params
@@ -162,6 +163,7 @@ class TripletLoss(torch.nn.Module):
         distance_positive = self.calc_euclidean(anchor, positive)
         distance_negative = self.calc_euclidean(anchor, negative)
         losses = torch.relu(distance_positive - distance_negative + self.margin)
+        # regularization = 1000 * (torch.sum(distance_params ** 2) - dim) ** 2
 
         return losses.mean()
 
@@ -174,8 +176,9 @@ print("Prepare variables")
 epochs = 10
 loss_fn = torch.jit.script(TripletLoss())
 batch_size = 128
-distance_params = torch.tensor([3.0231,  0.0293,  0.0216,  0.0486, -0.0429, -0.0182,  0.0276,  0.0502,
-        -0.0481]).float()
+# distance_params = torch.tensor([0.037361976, 0.03889106, 0.0363686 , 0.17359094, 0.01109282,
+#        0.0151649 , 0.00379076, 0.0188133 , 0.00453225, 0.32413561]).float()
+distance_params = torch.full((10,), 1.0, requires_grad=True)
 distance_params.requires_grad_(True)
 print(distance_params)
 learning_rate = 5e-2
@@ -200,9 +203,9 @@ print("Start learning params")
 for epoch in range(epochs):
     loss_value = 0
     for anchor_element, positive_element, negative_element in train_dataloader:
-        anchor_element = anchor_element * distance_params
-        positive_element = positive_element * distance_params
-        negative_element = negative_element * distance_params
+        # anchor_element = anchor_element * distance_params
+        # positive_element = positive_element * distance_params
+        # negative_element = negative_element * distance_params
 
         loss = loss_fn(anchor_element, positive_element, negative_element, distance_params)
         optimizer.zero_grad()
@@ -224,5 +227,5 @@ for epoch in range(epochs):
     print(f"Epoch {epoch}: {loss_value}, lr={lr}")
     with torch.no_grad():
         params = torch.flatten(distance_params)
-        regularization = 1000 * (torch.sum(distance_params ** 2) - 9) ** 2
+        regularization = 1000 * (torch.sum(distance_params ** 2) - 10) ** 2
         print(params, regularization)

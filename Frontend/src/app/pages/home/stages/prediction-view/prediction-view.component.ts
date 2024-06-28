@@ -85,13 +85,21 @@ export class PredictionViewComponent {
         }
       }
     }
-    this.nextStepEvent.emit({
-      predictingState: this.predictingState,
-      battery_order: this.predictingBatteryOrder,
-      cycle_order: this.predictingCycleOrder,
-      Qi: 0,
-      remain_cycle: 0
-    });
+
+    let res = this.serverResponse.find(x => x.type === 'ResultAndEvalution');
+
+    if(res){
+      this.nextStepEvent.emit({
+        predictingState: this.predictingState,
+        battery_order: this.predictingBatteryOrder,
+        cycle_order: this.predictingCycleOrder,
+        Qi: res.value?.at(0) ?? -1,
+        remain_cycle: res.value?.at(1) ?? -1
+      });
+    }
+    else{
+      console.error("ResultAndEvalution not found");
+    }
   }
 
 
@@ -129,18 +137,18 @@ export class PredictionViewComponent {
 
   async waitInQueue(): Promise<void> {
     try {
-      // await this._hubConnection.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
-      //   supervisedBatteryOrders: this.supervisedBatteryOrders,
-      //   predictingState: this.predictingState,
-      //   predictingBatteryOrder: this.predictingBatteryOrder,
-      //   predictingCycleOrder: this.predictingCycleOrder
-      // });
       await this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
-        supervisedBatteryOrders: [1, 2, 3, 4, 5],
-        predictingState: [1, 2, 3, 4, 5],
-        predictingBatteryOrder: 1,
-        predictingCycleOrder: 1
+        supervisedBatteryOrders: this.supervisedBatteryOrders,
+        predictingState: this.predictingState,
+        predictingBatteryOrder: this.predictingBatteryOrder,
+        predictingCycleOrder: this.predictingCycleOrder
       });
+      // await this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
+      //   supervisedBatteryOrders: [1, 2, 3, 4, 5],
+      //   predictingState: [1, 2, 3, 4, 5],
+      //   predictingBatteryOrder: 1,
+      //   predictingCycleOrder: 1
+      // });
     }
     catch (err) {
       console.error(err);
@@ -208,6 +216,7 @@ export class PredictionViewComponent {
       }
       let res = this.serverResponse.find(x => x.type === 'ResultAndEvalution');
       if (res) {
+
         return;
       }
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -259,14 +268,14 @@ export class PredictionViewComponent {
           retry: currentClass.waitInQueueRetry.bind(currentClass)
         },
         {
-          name: "Bắt đầu dự đoán dung lượng của chu kì Pin",
+          name: "Dự đoán dung lượng của Pin",
           code: "PredictingQi",
           status: "PENDING",
           task: currentClass.predictingQi.bind(currentClass),
           retry: currentClass.waitInQueueRetry.bind(currentClass)
         },
         {
-          name: "Bắt đầu dự đoán vòng đời còn lại của chu kì Pin",
+          name: "Dự đoán chu kỳ sống của Pin",
           code: "PredictingRemainCycle",
           status: "PENDING",
           task: currentClass.predictingRemainCycle.bind(currentClass),
