@@ -1,13 +1,13 @@
 <div class="choose-battery-state">
     <div class="choose-battery-state__description">
         <h1>
-            Chọn danh sách trạng thái của những chu kỳ sạc muốn dự đoán
+            Chọn trạng thái của chu kì cần dự đoán
         </h1>
         <p>
-            Danh sách trạng thái của những chu kỳ sạc trong Pin được chọn sẽ được dùng để làm đầu vào dự đoán thời gian sống còn lại của pin.
+            Chu kì với trạng thái được chọn sẽ được dùng để dự đoán thời gian sống còn lại của pin tính từ chu kì này.
         </p>
         <p>
-            Chọn một Pin mới có thể tiếp tục.
+            Chọn một chu kì mới có thể tiếp tục
         </p>
     </div>
     <div class="choose-battery-state__panel">
@@ -32,33 +32,34 @@
             <div class="table-main" style="overflow-x: auto;overflow-y: hidden;">
                 <table mat-table [dataSource]="dataSource" #tableBlock>
                     <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef>
-                          Chọn
-                        </th>
+                        <th mat-header-cell *matHeaderCellDef> Chọn </th>
                         <td mat-cell *matCellDef="let row">
                           <mat-radio-button (click)="$event.stopPropagation()"
                                         (change)="$event ? selection.toggle(row) : null"
-                                        [checked]="selection.isSelected(row)">
+                                        [checked]="selection.isSelected(row)"
+                                        color="primary">
                           </mat-radio-button>
                         </td>
                     </ng-container>
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="battery_order">
-                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> STT </th>
-                        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.battery_order}} </td>
-                    </ng-container>
-    
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="policy_readable">
-                        <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 300px;"> Tên Pin </th>
-                        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.policy_readable}} </td>
-                    </ng-container>
-    
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="cycle_count">
-                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Số chu kì</th>
-                        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.cycle_count}} </td>
-                    </ng-container>
+                    
+                    @for (column of columnInfos; track column.propertyName) {
+                        <ng-container [matColumnDef]="column.propertyName">
+                            <th mat-header-cell *matHeaderCellDef [matTooltip]="column.tooltip" 
+                                style="text-align: center;" 
+                                [style.min-width]="column.minWidth === null ? 'none' : column.minWidth + 'px'"> 
+                                {{column.columnName}} 
+                            </th>
+                            <td mat-cell *matCellDef="let element" [matTooltip]="column.tooltip"
+                                style="text-align: right;"> 
+                                @if (column.isNotDecimal) {
+                                    {{element[column.propertyName]}}
+                                } 
+                                @else {
+                                    {{element[column.propertyName] | number: '1.4-4'}}
+                                }
+                            </td>
+                        </ng-container>
+                    }
     
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

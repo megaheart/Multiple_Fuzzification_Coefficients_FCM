@@ -49,9 +49,9 @@ def callback(ch, method, properties, body):
     #       dict['PredictingBatteryOrder'], dict['PredictingCycleOrder'], 
     #       dict['ConnectionId'], dict)
     supervisedBatteryOrders = req['SupervisedBatteryOrders']
-    predictingState = req['PredictingState']
+    # predictingState = req['PredictingState']
     predictingBatteryOrder = req['PredictingBatteryOrder']
-    predictingCycleOrder = req['PredictingCycleOrder']
+    # predictingCycleOrder = req['PredictingCycleOrder']
     connectionId = req['ConnectionId']
 
     # check if the key exists
@@ -74,12 +74,12 @@ def callback(ch, method, properties, body):
     res = proc.start_predict_capacity_response(req['ConnectionId'])
     channel.basic_publish(exchange='', routing_key='queue.server', body=res)
     print(" [x] Sent %r" % res)
-    capacity = proc.predict_capacity(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder)
+    dataframe, true_capacity, capacity = proc.predict_capacity(supervisedBatteryOrders, predictingBatteryOrder)
     res = proc.start_predict_remain_life_response(req['ConnectionId'])
     channel.basic_publish(exchange='', routing_key='queue.server', body=res)
     print(" [x] Sent %r" % res)
-    remain_life = proc.predict_remain_life(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder, capacity)
-    res = proc.finish_predict_response(req['ConnectionId'], [capacity, remain_life])
+    true_remain_life, remain_life = proc.predict_remain_life(dataframe, supervisedBatteryOrders, predictingBatteryOrder, capacity)
+    res = proc.finish_predict_response(req['ConnectionId'], dataframe, predictingBatteryOrder, capacity, remain_life, true_capacity, true_remain_life)
     channel.basic_publish(exchange='', routing_key='queue.server', body=res)
     print(" [x] Sent %r" % res)
 

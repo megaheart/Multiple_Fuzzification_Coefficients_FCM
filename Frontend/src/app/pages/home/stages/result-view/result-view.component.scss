@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-.choose-battery-state {
+.result-view {
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: 1fr auto;
@@ -68,8 +68,6 @@
             grid-template-rows: 1fr auto;
             border-radius: 3px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
-            max-width: 559px;
-            margin: 0 auto;
 
             >:first-child {
                 grid-column: 1;

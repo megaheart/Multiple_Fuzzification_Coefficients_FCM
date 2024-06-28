@@ -58,7 +58,7 @@ $primary-color: mat.get-theme-color(styles.$frontend-theme, primary, 500);
 
         $panel-height: 200px;
         grid-template-rows: 1fr $panel-height $panel-height 1fr;
-        grid-column: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
 
         .result-box {
@@ -120,36 +120,50 @@ $primary-color: mat.get-theme-color(styles.$frontend-theme, primary, 500);
                 font-size: 16px;
             }
 
-            &.input{
-                .result-box__main {
-                    ul li {
-                        margin-top: 6px;
+            .result-box__main {
+                ul li {
+                    margin-top: 6px;
 
-                        span.prop {
-                            font-weight: 500;
-                            display: inline-block;
-                            width: 86px;
-                            color: rgb(80, 80, 80);
-                        }
+                    span.prop {
+                        font-weight: 500;
+                        display: inline-block;
+                        // width: 86px;
+                        margin-right: 9px;
+                        color: rgb(80, 80, 80);
                     }
                 }
             }
 
-            &:not(.input){
-                ul {
-                    list-style: none;
-                    padding: 0;
-                    margin-top: 64px;
+            // &.input{
+            //     .result-box__main {
+            //         ul li {
+            //             margin-top: 6px;
 
-                    li{
-                        margin: 0;
-                        text-align: center;
+            //             span.prop {
+            //                 font-weight: 500;
+            //                 display: inline-block;
+            //                 width: 86px;
+            //                 color: rgb(80, 80, 80);
+            //             }
+            //         }
+            //     }
+            // }
 
-                        // span{
-                        // }
-                    }
-                }
-            }
+            // &:not(.input){
+            //     ul {
+            //         list-style: none;
+            //         padding: 0;
+            //         margin-top: 64px;
+
+            //         li{
+            //             margin: 0;
+            //             text-align: center;
+
+            //             // span{
+            //             // }
+            //         }
+            //     }
+            // }
         }
         
     }

@@ -10,6 +10,7 @@ import { ChooseBatteryStateComponent } from './stages/choose-battery-state/choos
 import { ChooseSupervisedComponent } from './stages/choose-supervised/choose-supervised.component';
 import { PredictionViewComponent } from './stages/prediction-view/prediction-view.component';
 import { EvalutionViewComponent } from './stages/evalution-view/evalution-view.component';
+import { ResultViewComponent } from './stages/result-view/result-view.component';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ import { EvalutionViewComponent } from './stages/evalution-view/evalution-view.c
   imports: [
     RouterLink, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, 
     MatDividerModule, MatIconModule, ChooseBatteryStateComponent, ChooseSupervisedComponent,
-    PredictionViewComponent, EvalutionViewComponent
+    PredictionViewComponent, EvalutionViewComponent, ResultViewComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -27,10 +28,11 @@ export class HomeComponent implements OnInit, OnDestroy{
   // @ViewChild('contentBox') contentBox!: ElementRef<HTMLDivElement>;
   // @ViewChild('matInput') matInput!: ElementRef<HTMLInputElement>;
   catalogueList:string[] = [
-    "Chọn tập giám sát",
-    "Chọn trạng thái muốn dự đoán",
+    "Chọn bộ dữ liệu học",
+    "Chọn danh sách trạng thái của những chu kỳ sạc muốn dự đoán",
     "Tiến hành dự đoán",
-    "Kết quả/Đánh giá dự đoán",
+    "Kết quả dự đoán",
+    "Đánh giá kết quả",
   ];
 
   currentCatalogueIndex:number = 0;
@@ -38,20 +40,24 @@ export class HomeComponent implements OnInit, OnDestroy{
   disabledResetBtn:boolean = false;
   supervisedBatteryOrders: number[] = [];
   unsupervisedBatteryOrders: number[] = [];
-  predictingState: number[] = [];
+  // predictingStates: number[][] = [];
   predictingBatteryOrder: number = 0;
-  predictingCycleOrder: number = 0;
+  // predictingCycleOrder: number = 0;
   result = signal<{
-    predictingState:number[], 
+    resultStates:number[][], 
     battery_order:number, 
-    cycle_order:number, Qi:number, 
-    remain_cycle:number
+    mape_Qi:number,
+    rmse_Qi:number,
+    mape_remain_cycle:number,
+    rmse_remain_cycle:number,
   }>({
-    predictingState: [0, 1, 2, 3, 4, 5, 6, 7, 8 ,9],
-    battery_order: 20,
-    cycle_order: 0.1,
-    Qi: 0.3,
-    remain_cycle: 100
+    // 9 features + cycle_order + Qi prediction + remain_cycle prediction + real cycle + real Qi
+    resultStates: [[0.123456789, 1.123456789, 2.123456789, 3.123456789, 4.123456789, 5.123456789, 6.123456789, 7.123456789, 8.123456789 ,9.123456789, 10, 11.123456789, 12.123456789]],  
+    battery_order: 1234,
+    mape_Qi: 11.123456789,
+    rmse_Qi: 12.123456789,
+    mape_remain_cycle: 13.123456789,
+    rmse_remain_cycle: 14.123456789,
   });
 
   constructor() {
@@ -64,12 +70,19 @@ export class HomeComponent implements OnInit, OnDestroy{
   }
   selectCatalogue(index:number){
     if(index < 0 || index >= this.currentCatalogueIndex || this.currentCatalogueIndex === 2 || this.currentCatalogueIndex === 3) return;
+    
+    if (this.currentCatalogueIndex === 4){
+      if (index < 3){
+        return;
+      }
+    }
+    
     this.disabledPreviousStepBtn = index === 0 || index === 2 || index === 3;
     this.currentCatalogueIndex = index;
     this.disabledResetBtn = index === 2 || index === 3;
 
     if(index === 0){
-      this.predictingState = [];
+      this.predictingBatteryOrder = 0;
     }
   }
   reset(){
@@ -84,20 +97,32 @@ export class HomeComponent implements OnInit, OnDestroy{
 
     console.log(this.supervisedBatteryOrders);
   }
-  step2({predictingState, battery_order, cycle_order}:{predictingState:number[], battery_order:number, cycle_order:number}){
-    this.predictingState = predictingState;
+  step2({battery_order}:{battery_order:number}){
+    // this.predictingState = predictingState;
     this.predictingBatteryOrder = battery_order;
-    this.predictingCycleOrder = cycle_order;
+    // this.predictingCycleOrder = cycle_order;
 
     this.currentCatalogueIndex = 2;
     this.disabledPreviousStepBtn = true;
     this.disabledResetBtn = true;
   }
-  step3(result : {predictingState:number[], battery_order:number, cycle_order:number, Qi:number, remain_cycle:number}){
-    console.log("step3", result);
+  step3(result : {
+    resultStates:number[][], 
+    battery_order:number, 
+    mape_Qi:number,
+    rmse_Qi:number,
+    mape_remain_cycle:number,
+    rmse_remain_cycle:number,
+  }){
     this.result.set(result);
     this.currentCatalogueIndex = 3;
     this.disabledPreviousStepBtn = true;
+    this.disabledResetBtn = false;
+  }
+  step4(){
+    
+    this.currentCatalogueIndex = 4;
+    this.disabledPreviousStepBtn = false;
     this.disabledResetBtn = false;
   }
 

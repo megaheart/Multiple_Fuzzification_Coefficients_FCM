@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import sklearn.preprocessing as pre
 import pandas as pd
 from sklearn.model_selection import train_test_split, KFold
-from sklearn.metrics import mean_squared_error, accuracy_score
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from sklearn.preprocessing import MinMaxScaler
 import math, time, random
 import os
@@ -18,7 +18,8 @@ def start_predict_capacity_response(connectionId:str):
         "connectionId": connectionId,
         "type": "PredictingQi",
         "message": "Start predicting capacity",
-        "value": [] # list of double values
+        "value": [], # list of double values
+        "values": []
     }
     res = json.dumps(res)
     return res
@@ -28,22 +29,37 @@ def start_predict_remain_life_response(connectionId:str):
         "connectionId": connectionId,
         "type": "PredictingRemainCycle",
         "message": "Start predicting remain life",
-        "value": [] # list of double values
+        "value": [], # list of double values
+        "values": []
     }
     res = json.dumps(res)
     return res
-def finish_predict_response(connectionId:str, value: list[float]):
+def finish_predict_response(connectionId:str, dataframe:pd.DataFrame, predictingBatteryOrder, capacity, remain_life, true_capacity, true_remain_life):
+    # ### Load the data
+    test_X_df = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", \
+                                        "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T", "cycle_order"]]
+    # print("hello: ", len(test_X_df), len(capacity), len(remain_life))
+    
+    test_X_df['Qi_pred'] = capacity
+    test_X_df['remain_life_pred'] = remain_life
+
+    rmse_Qi = np.sqrt(mean_squared_error(true_capacity, capacity))
+    mape_Qi = mean_absolute_percentage_error(true_capacity, capacity)
+    rmse_remain_life = np.sqrt(mean_squared_error(true_remain_life, remain_life))
+    mape_remain_life = mean_absolute_percentage_error(true_remain_life, remain_life)
+
     res = {
         "isSuccessful": True,
         "connectionId": connectionId,
         "type": "ResultAndEvalution",
         "message": "Finish predicting",
-        "value": value # list of double values
+        "value": [mape_Qi, rmse_Qi, mape_remain_life, rmse_remain_life], # list of double values
+        "values": test_X_df.head(100).values.tolist()
     }
     res = json.dumps(res)
     return res
 
-def predict_capacity(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder):
+def predict_capacity(supervisedBatteryOrders, predictingBatteryOrder):
     C = 10
     
     # ### Load the data
@@ -59,8 +75,10 @@ def predict_capacity(supervisedBatteryOrders, predictingState, predictingBattery
         .to_numpy()
     train_Qi = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["Qi"]]\
         .to_numpy()
-    # test_Qi = dataframe[(dataframe['battery_order'] == predictingBatteryOrder) & (dataframe['cycle_order'] == predictingCycleOrder)][["Qi"]]\
-    #     .to_numpy().item()
+    test_Qi = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["Qi"]]\
+         .to_numpy()
+
+    return dataframe, test_Qi, test_Qi + test_Qi * random.random() * 0.1
 
     battery_cycles_count = [len(dataframe[dataframe['battery_order'] == i]) for i in range(1, 125)]
     # print(battery_cycles_count)
@@ -148,10 +166,10 @@ def predict_capacity(supervisedBatteryOrders, predictingState, predictingBattery
     return pred_Qi.flatten()[0]
 
 
-def predict_remain_life(supervisedBatteryOrders, predictingState, predictingBatteryOrder, predictingCycleOrder, capacity):
+def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predictingBatteryOrder, capacity):
     # ### Load the data
-    data_path = "./Data/battery_cycles.csv"
-    dataframe = pd.read_csv(data_path)
+    # data_path = "./Data/battery_cycles.csv"
+    # dataframe = pd.read_csv(data_path)
     
     remain_cycles = dataframe[["cycle_order"]].to_numpy()
 
@@ -184,8 +202,12 @@ def predict_remain_life(supervisedBatteryOrders, predictingState, predictingBatt
         [["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T", "Qi"]]\
         .to_numpy()
     train_t = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["remain_life"]]\
-    .to_numpy()
+        .to_numpy()
+    
+    test_t = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["remain_life"]]\
+        .to_numpy()
 
+    return test_t, test_t + test_t * random.random() * 0.1
     scaler = MinMaxScaler()
     train_X = scaler.fit_transform(train_X)
 

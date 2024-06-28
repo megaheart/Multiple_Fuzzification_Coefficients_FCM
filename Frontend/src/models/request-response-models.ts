@@ -10,4 +10,5 @@ export interface PredictBatteryLifeResponse {
     type: "BadRequest"|"PushToQueue"|"PredictingQi"|"PredictingRemainCycle"|"ResultAndEvalution";
     message: string;
     value: number[] | null;
+    values: number[][] | null;
 }

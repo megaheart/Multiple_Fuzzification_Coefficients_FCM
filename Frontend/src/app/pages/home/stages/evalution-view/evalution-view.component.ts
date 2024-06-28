@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { DecimalPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,16 +13,20 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class EvalutionViewComponent implements OnInit{
   @Input() result : {
-    predictingState:number[], 
+    resultStates:number[][], 
     battery_order:number, 
-    cycle_order:number, Qi:number, 
-    remain_cycle:number
+    mape_Qi:number,
+    rmse_Qi:number,
+    mape_remain_cycle:number,
+    rmse_remain_cycle:number,
   } = {
-    predictingState: [-1, -1, -1, -1, -1],
+    // 9 features + cycle_order + Qi prediction + remain_cycle prediction + real cycle + real Qi
+    resultStates: [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]],
     battery_order: -1,
-    cycle_order: -1,
-    Qi: -1,
-    remain_cycle: -1
+    mape_Qi: -1,
+    rmse_Qi: -1,
+    mape_remain_cycle: -1,
+    rmse_remain_cycle: -1,
   };
 
   props = PROPS;

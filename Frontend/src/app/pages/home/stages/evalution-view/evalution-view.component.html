@@ -1,13 +1,13 @@
 <div class="evalution-view">
     <div class="evalution-view__description">
         <h1>
-            Kết quả dự đoán
+            Đánh giá kết quả
         </h1>
         <p>
-            Bảng <b>Trạng thái của chu kì được chọn</b> hiển thị lại các thuộc tính của chu kỳ đầu vào cần dự đoán.
+            Bảng <b>Đầu vào</b> hiển thị các thông tin đầu vào.
         </p>
         <p>
-            Kết quả dự đoán của 2 quá trình dự đoán dung lượng Pin và dự đoán vòng đời Pin lần lượt sẽ được hiển thị tại 2 bảng 
+            Đánh giá kết quả của 2 quá trình dự đoán dung lượng Pin và dự đoán vòng đời Pin lần lượt sẽ được hiển thị tại 2 bảng 
             <b>Dung lượng pin dự đoán</b> và <b>Vòng đời còn lại dự đoán của Pin</b>.
         </p>
         <p>
@@ -24,17 +24,19 @@
             <div class="result-box__header">
                 <mat-icon fontIcon="list_alt"></mat-icon>
                 <span class="result-box__title">
-                    Trạng thái của chu kì được chọn
+                    Đầu vào
                 </span>
             </div>
             <div class="result-box__main">
                 <ul>
-                    @for(prop of props; track prop.propertyName) {
-                    <li [matTooltip]="prop.tooltip + ' = ' + result.predictingState[$index]">
-                        <span class="prop">{{prop.columnName}}: </span>
-                        <span>{{result.predictingState[$index] | number: '1.4-4'}} {{prop.unit}}</span>
+                    <li>
+                        <span class="prop">STT Pin: </span>
+                        <span>{{result.battery_order}}</span>
                     </li>
-                    }
+                    <li>
+                        <span class="prop">Số lượng: </span>
+                        <span>{{result.resultStates.length}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -49,7 +51,12 @@
             <div class="result-box__main">
                 <ul>
                     <li>
-                        <span>{{result.Qi | number: '1.4-4'}} C</span>
+                        <span class="prop">RMSE: </span>
+                        <span>{{result.rmse_Qi| number: '1.6-6'}}</span>
+                    </li>
+                    <li>
+                        <span class="prop">MAPE: </span>
+                        <span>{{result.mape_Qi | number: '1.6-6'}}</span>
                     </li>
                 </ul>
             </div>
@@ -65,7 +72,12 @@
             <div class="result-box__main">
                 <ul>
                     <li>
-                        <span>{{result.remain_cycle | number: '1.0-0'}} chu kì</span>
+                        <span class="prop">RMSE: </span>
+                        <span>{{result.rmse_remain_cycle| number: '1.6-6'}}</span>
+                    </li>
+                    <li>
+                        <span class="prop">MAPE: </span>
+                        <span>{{result.mape_remain_cycle | number: '1.6-6'}}</span>
                     </li>
                 </ul>
             </div>

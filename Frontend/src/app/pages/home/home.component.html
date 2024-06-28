@@ -50,11 +50,14 @@
                 <app-choose-battery-state [unsupervisedBatteryOrders]="unsupervisedBatteryOrders" (nextStepEvent)="step2($event)"/>
             }
             @case (2) {
-                <app-prediction-view  [supervisedBatteryOrders]="supervisedBatteryOrders" [predictingState]="predictingState"
-                    [predictingBatteryOrder]="predictingBatteryOrder" [predictingCycleOrder]="predictingCycleOrder"
+                <app-prediction-view  [supervisedBatteryOrders]="supervisedBatteryOrders"
+                    [predictingBatteryOrder]="predictingBatteryOrder"
                     (nextStepEvent)="step3($event)"/>
             }
             @case (3) {
+                <app-result-view [result]="result" (nextStepEvent)="step4()"/>
+            }
+            @case (4) {
                 <app-evalution-view [result]="result()"/>
             }
         }

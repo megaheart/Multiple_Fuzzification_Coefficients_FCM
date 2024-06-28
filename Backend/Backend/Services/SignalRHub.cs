@@ -45,7 +45,7 @@ namespace Backend.Services
             }
 
             if (request == null || request.SupervisedBatteryOrders == null || request.SupervisedBatteryOrders.Length == 0
-                || request.PredictingState == null || request.PredictingState.Length == 0 || request.PredictingCycleOrder == 0
+                //|| request.PredictingState == null || request.PredictingState.Length == 0 || request.PredictingCycleOrder == 0
                 || request.PredictingBatteryOrder == 0)
             {
                 var response = new PredictBatteryLifeResponse

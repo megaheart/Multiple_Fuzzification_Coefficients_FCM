@@ -18,11 +18,16 @@ export class PredictionViewComponent {
   private _hubConnection?: signalR.HubConnection;
 
   @Input() supervisedBatteryOrders: number[] = [];
-  @Input() predictingState: number[] = [];
   @Input() predictingBatteryOrder: number = 0;
-  @Input() predictingCycleOrder: number = 0;
 
-  @Output() nextStepEvent = new EventEmitter<{ predictingState: number[], battery_order: number, cycle_order: number, Qi: number, remain_cycle: number }>();
+  @Output() nextStepEvent = new EventEmitter<{
+    resultStates:number[][], 
+    battery_order:number, 
+    mape_Qi:number,
+    rmse_Qi:number,
+    mape_remain_cycle:number,
+    rmse_remain_cycle:number,
+  }>();
 
   isServerRunning = false;
   isRetryBtnDisabled = signal(true);
@@ -90,11 +95,12 @@ export class PredictionViewComponent {
 
     if(res){
       this.nextStepEvent.emit({
-        predictingState: this.predictingState,
         battery_order: this.predictingBatteryOrder,
-        cycle_order: this.predictingCycleOrder,
-        Qi: res.value?.at(0) ?? -1,
-        remain_cycle: res.value?.at(1) ?? -1
+        resultStates: res?.values ?? [],
+        mape_Qi: res?.value?.at(0) ?? -1,
+        rmse_Qi: res?.value?.at(1) ?? -1,
+        mape_remain_cycle: res?.value?.at(2) ?? -1,
+        rmse_remain_cycle: res?.value?.at(3) ?? -1
       });
     }
     else{
@@ -139,9 +145,7 @@ export class PredictionViewComponent {
     try {
       await this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
         supervisedBatteryOrders: this.supervisedBatteryOrders,
-        predictingState: this.predictingState,
         predictingBatteryOrder: this.predictingBatteryOrder,
-        predictingCycleOrder: this.predictingCycleOrder
       });
       // await this._hubConnection?.invoke(SignalrHubMethods.PREDICT_BATTERY_LIFE, {
       //   supervisedBatteryOrders: [1, 2, 3, 4, 5],
