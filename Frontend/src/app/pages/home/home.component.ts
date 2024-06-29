@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     
     this.disabledPreviousStepBtn = index === 0 || index === 2 || index === 3;
     this.currentCatalogueIndex = index;
-    this.disabledResetBtn = index === 2 || index === 3;
+    this.disabledResetBtn = index === 2;
 
     if(index === 0){
       this.predictingBatteryOrder = 0;

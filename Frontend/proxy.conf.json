@@ -1,6 +1,6 @@
 {
     "/hub": {
-        "target": "https://localhost:7039/",
+        "target": "http://localhost:5261/",
         "secure": false,
         "changeOrigin": true,
         "ws": true,
@@ -9,7 +9,7 @@
         }
     },
     "/api": {
-        "target": "https://localhost:7039/",
+        "target": "http://localhost:5261/",
         "secure": false,
         "changeOrigin": true,
         "headers": {

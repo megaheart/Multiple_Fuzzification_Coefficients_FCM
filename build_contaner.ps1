@@ -11,3 +11,7 @@ docker build -t node-pnpm:20.14.0 .
 docker run -it --entrypoint /bin/sh node-pnpm:20.14.0
 
 heroku container:push web -a datn-linh-tpm
+
+heroku container:release web -a datn-linh-tpm
+
+heroku logs --tail -a datn-linh-tpm

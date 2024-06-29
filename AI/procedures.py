@@ -75,10 +75,13 @@ def predict_capacity(supervisedBatteryOrders, predictingBatteryOrder):
         .to_numpy()
     train_Qi = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["Qi"]]\
         .to_numpy()
+    test_X = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", \
+                                        "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T"]]\
+                                        .to_numpy()
     test_Qi = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["Qi"]]\
          .to_numpy()
 
-    return dataframe, test_Qi, test_Qi + test_Qi * random.random() * 0.1
+    # return dataframe, test_Qi, test_Qi + test_Qi * random.random() * 0.1
 
     battery_cycles_count = [len(dataframe[dataframe['battery_order'] == i]) for i in range(1, 125)]
     # print(battery_cycles_count)
@@ -127,9 +130,9 @@ def predict_capacity(supervisedBatteryOrders, predictingBatteryOrder):
             raise ValueError("Not support x and v")
     
     # sSMC-FCM
-    _X = [predictingState]
+    _X = test_X
     _X = scaler.transform(_X)
-    _Y = [np.nan]
+    _Y = np.full(len(_X), np.nan)
     _X = np.concatenate((train_X, _X), axis=0)
     _Y = np.concatenate((Y[:train_size], _Y), axis=0)
     _N = len(_Y)
@@ -139,6 +142,7 @@ def predict_capacity(supervisedBatteryOrders, predictingBatteryOrder):
     # initialize variables; initialize U, V, m2
     print("Initializing variables")
     max_iter = 80
+    # max_iter = 3
     alpha = 0.5
     alg.X = _X
     alg.Y = _Y
@@ -163,7 +167,7 @@ def predict_capacity(supervisedBatteryOrders, predictingBatteryOrder):
     pred_y = np.argmax(alg.U, axis=1)
     pred_Qi = np.array([clusters_Qi[pred_y[i]] for i in range(train_size, _N)])
 
-    return pred_Qi.flatten()[0]
+    return dataframe, test_Qi, pred_Qi
 
 
 def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predictingBatteryOrder, capacity):
@@ -204,10 +208,14 @@ def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predict
     train_t = dataframe[dataframe['battery_order'].isin(train_battery_orders)][["remain_life"]]\
         .to_numpy()
     
+    test_X = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["c1a_I_dt", "c1a_avg_T", "c1a_avg_I", \
+                                        "c1_max_I","c2_max_I", "c1_max_T", "c1_min_T", "c2_max_T", "c2_min_T", "Qi"]]\
+                                        .to_numpy()
+    
     test_t = dataframe[dataframe['battery_order'] == predictingBatteryOrder][["remain_life"]]\
         .to_numpy()
 
-    return test_t, test_t + test_t * random.random() * 0.1
+    # return test_t, test_t + test_t * random.random() * 0.1
     scaler = MinMaxScaler()
     train_X = scaler.fit_transform(train_X)
 
@@ -252,11 +260,9 @@ def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predict
             raise ValueError("Not support x and v")
         
     # sSMC-FCM
-    predictingState = list(predictingState)
-    predictingState.append(capacity)
-    _X = [predictingState]
+    _X = test_X
     _X = scaler.transform(_X)
-    _Y = [np.nan]
+    _Y = np.full(len(_X), np.nan)
     _X = np.concatenate((train_X, _X), axis=0)
     _Y = np.concatenate((Y[:train_size], _Y), axis=0)
     _N = len(_Y)
@@ -265,7 +271,8 @@ def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predict
     
     # initialize variables; initialize U, V, m2
     print("Initializing variables")
-    max_iter = 10
+    max_iter = 80
+    # max_iter = 3
     alpha = 0.5
     alg.X = _X
     alg.Y = _Y
@@ -290,4 +297,4 @@ def predict_remain_life(dataframe:pd.DataFrame, supervisedBatteryOrders, predict
     pred_y = np.argmax(alg.U, axis=1)
     pred_t = np.array([clusters_t[pred_y[i]] for i in range(train_size, _N)])
 
-    return pred_t.flatten()[0]
+    return test_t, pred_t
